@@ -1,0 +1,87 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+body {
+    background: mistyrose; 
+}
+
+.contacts_form {
+    display: flex;
+    justify-content: center;
+}
+
+.form {
+    background: lightgray;
+    opacity: 10%;
+    width: 120%;
+    height: 60px;
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-size: 25px;
+    margin-bottom: 15px;
+    border: 0;
+    padding: 5px;
+    padding-left: 10px;
+    border-radius: 10px;
+}
+
+.form_btm {
+    font-family: Source Sans Pro;
+    font-style: Semibold;
+    font-size: 15px;
+    color: white;
+    background: darkviolet;
+    border: 0px;
+    width: 160px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+}
+
+.Test {
+    display: flex;
+    justify-content: center;
+}
+
+.form_btm1 {
+    font-family: Source Sans Pro;
+    font-style: Semibold;
+    font-size: 15px;
+    color: black;
+    background: white;
+    border: 0px;
+    width: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.Question {
+    display: flex;
+    justify-content: center;
+}
+
+.One_answer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 705px
+}
+
+.Next {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-left: 705px
+}

@@ -1,0 +1,87 @@
+﻿@page "/test"
+@using BlazorWebAssemblyProjectTest.Shared
+
+@inject HttpClient Http
+
+<Link href="/css/styles.css" rel="stylesheet" type="text/css" />
+
+<PageTitle>Test</PageTitle>
+
+
+@if (questions == null)
+{
+        <p><em>Load question...</em></p>
+}
+else
+{
+       <br />
+            <br />
+            <br />
+        <div class="Question">
+            <p> Я люблю изучать психологию и все что связано с мышлением</p>
+        </div>
+        <br />
+        <div class="One_answer">
+                <br />
+                <br />
+                <br />
+            <button type="button" class="form_btm1" id="form_btm_id"> Совсем не про меня </button>
+                <br />
+            <button type="button" class="form_btm1" id="form_btm_id"> Скорее не про меня </button>
+                <br />
+            <button type="button" class="form_btm1" id="form_btm_id"> Скорее про меня </button>
+                <br />
+            <button type="button" class="form_btm1" id="form_btm_id"> Точно про меня </button>
+                <br />
+            <button type="button" class="form_btm1" id="form_btm_id"> Зутрудняюсь ответить </button>  
+                <br />
+        </div>
+
+        <div class="Question">
+            @foreach (var question in questions.Question)
+                {
+                        @question.Name
+                }
+        </div>
+
+        <div class="Next">
+              <br />
+            <button class="form_btm" @onclick="Next"> Далее </button>  
+              <br />
+        </div>
+            <br />
+        <div class="page">
+            <span> @questions.CurrentPage / @questions.NumberPage </span>
+        </div>
+
+}
+
+<!--  <h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button> -->
+
+@code {
+    private QuestionPart questions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await DataLoad (1);
+
+    }
+
+    private async Task Next()
+    {
+        if (questions.CurrentPage < questions.NumberPage)
+        {
+        await DataLoad(questions.CurrentPage + 1);
+
+        }
+    }
+
+    private async Task DataLoad(int page)
+    {
+        questions = await Http.GetFromJsonAsync<QuestionPart>("api/question/1");
+    }
+}

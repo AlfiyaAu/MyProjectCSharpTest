@@ -1,0 +1,41 @@
+﻿@page "/"
+
+@inject NavigationManager NavigMened
+
+<Link href="/css/styles.css" rel="stylesheet" type="text/css" />
+
+<PageTitle>Index</PageTitle>
+
+
+<!--<EditForm OnSubmit="OnTest">
+	<div class="contacts_form">
+		<button type="submit" class="form_btm" id="form_btm_id"> Начать тестирование </button>	
+	</div>
+</EditForm>  -->  
+
+<img alt="icon-512" src="/icon-512.png" /> 
+
+<div class="contacts_form">
+	<form name="cont_form" action="">
+		<br>			
+		<br>				
+		<br>				
+		<br>				
+		<!-- <input type="submit" value="Отправить" class="form_btm"> -->          
+	    <button class="form_btm" @onclick="OnTest"> Начать тестирование </button>	
+   </form>
+                
+</div>  
+	
+
+@code {
+
+	public void OnTest()
+	{
+		NavigMened.NavigateTo("/test");
+	}
+
+}
+
+
+<!-- <SurveyPrompt Title="How is Blazor working for you?" /> --> 
