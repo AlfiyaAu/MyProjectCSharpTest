@@ -18,5 +18,5 @@ namespace BlazorWebAssemblyProjectTest.Shared
 		public int NumberPage { get; set; }
 		public int CurrentPage { get; set; }
 		public IEnumerable<Question> Question { get; set; }
-	}
+    }
 }

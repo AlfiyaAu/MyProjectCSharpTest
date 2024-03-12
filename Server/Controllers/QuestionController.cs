@@ -43,21 +43,29 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
 			{
 				CurrentPage = page,
 				NumberPage = a.Id,
-				Question = new List<Question> { a }
+				Question = new List<Question> { a },
             };
 			return Ok(put);
-		}
+        }
 
-		//[HttpGet("id/{idQ}")]
-		//public ActionResult<Answer> GetAnswer(int idq)
-		//{
-		//	var selectAnswer = answers.Where
+        [HttpGet]
+        public ActionResult<IEnumerable<Answer>> Get()
+        {
+            var a = _context.Questions.FirstOrDefault();
+            var b = _context.Answers.Where(x => x.QuestionId == a.Id);
+
+            return Ok(b);
+        }
+        //[HttpGet("id/{idQ}")]
+        //public ActionResult<Answer> GetAnswer(int idq)
+        //{
+        //	var selectAnswer = answers.Where
 
 
-		//	foreach (var ans in answers.Answer where)
-		//		{
+        //	foreach (var ans in answers.Answer where)
+        //		{
 
-		//	}
-		//}
-	}
+        //	}
+        //}
+    }
 }

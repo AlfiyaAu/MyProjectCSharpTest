@@ -1,5 +1,8 @@
 ﻿@page "/test"
 @using BlazorWebAssemblyProjectTest.Shared
+@using Microsoft.EntityFrameworkCore
+@using BlazorWebAssemblyProjectTest; 
+
 
 @inject HttpClient Http
 
@@ -40,15 +43,23 @@ else
         <div class="Question">
             @foreach (var question in questions.Question)
                 {
-                        @question.Name
+                    @question.Name
                 }
         </div>
+
+        <div class="form_btm1"> 
+        @foreach (var ansver in new List<Answer>())
+                {
+                    @ansver.Name
+                }
+        </div>
+
 
         <div class="Next">
               <br />
         @if (questions.CurrentPage == questions.NumberPage)
         {
-            <button class="form_btm" @onclick="Next"> Узнать результат </button>
+             <button class="form_btm" @onclick="AnsTest"> Узнать результат </button>
         }
         else
         {
@@ -72,10 +83,12 @@ else
 
 @code {
     private QuestionPart questions;
+    private Answer[]? answers;
 
     protected override async Task OnInitializedAsync()
     {
         await DataLoad (1);
+        answers = await Http.GetFromJsonAsync<Answer[]>("api/question/");
 
     }
 
@@ -84,6 +97,7 @@ else
         if (questions.CurrentPage < questions.NumberPage)
         {
         await DataLoad(questions.CurrentPage + 1);
+        await Http.GetFromJsonAsync<Answer[]>("api/question");
 
         }
     }
@@ -91,5 +105,12 @@ else
     private async Task DataLoad(int page)
     {
         questions = await Http.GetFromJsonAsync<QuestionPart>($"api/question/{page}");
+        
+    }
+
+    private async Task AnsTest()
+    {
+        answers = await Http.GetFromJsonAsync<Answer[]>("api/question");
+
     }
 }
