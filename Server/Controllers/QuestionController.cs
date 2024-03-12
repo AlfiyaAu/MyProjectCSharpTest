@@ -18,11 +18,11 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
 
         private static List<Answer> answers = new List<Answer>
         {
-            new Answer {Id = 01, IdQ = 1, Name = "Answer 1", TypeSelf= "TypeSelf 1"},
-            new Answer {Id = 02, IdQ = 1, Name = "Answer 2", TypeSelf= "TypeSelf 2"},
-            new Answer {Id = 03, IdQ = 1, Name = "Answer 3", TypeSelf= "TypeSelf 3"},
-            new Answer {Id = 04, IdQ = 2, Name = "Answer 4", TypeSelf= "TypeSelf 4"},
-            new Answer {Id = 05, IdQ = 2, Name = "Answer 5", TypeSelf= "TypeSelf 5"},
+            new Answer {Id = 01, QuestionId = 1, Name = "Answer 1", SelfTypeId= "TypeSelf 1"},
+            new Answer {Id = 02, QuestionId = 1, Name = "Answer 2", SelfTypeId= "TypeSelf 2"},
+            new Answer {Id = 03, QuestionId = 1, Name = "Answer 3", SelfTypeId= "TypeSelf 3"},
+            new Answer {Id = 04, QuestionId = 2, Name = "Answer 4", SelfTypeId= "TypeSelf 4"},
+            new Answer {Id = 05, QuestionId = 2, Name = "Answer 5", SelfTypeId= "TypeSelf 5"},
         };
 
 
