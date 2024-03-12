@@ -1,4 +1,6 @@
+using BlazorWebAssemblyProjectTest.Server.DB;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorWebAssemblyProjectTest
 {
@@ -9,6 +11,12 @@ namespace BlazorWebAssemblyProjectTest
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            var connString = "Server=(localdb)\\mssqllocaldb;Database=TestDatabase123;Trusted_Connection=True;";
+            builder.Services.AddDbContext<SqlServerDbContext>(opt => opt.UseSqlServer(connString, builder =>
+            {
+                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            }));
 
             builder.Services.AddControllers();
             //builder.Services.AddControllersWithViews();

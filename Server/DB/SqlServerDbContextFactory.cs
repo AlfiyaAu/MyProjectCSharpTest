@@ -8,7 +8,7 @@ namespace BlazorWebAssemblyProjectTest.Server.DB
     {
         public SqlServerDbContext CreateDbContext(string[] args)
         {
-            var connString = "Server=(localdb)\\mssqllocaldb;Database=TestDatabase;Trusted_Connection=True;";
+            var connString = "Server=(localdb)\\mssqllocaldb;Database=TestDatabase123;Trusted_Connection=True;";
 
             var option = new DbContextOptionsBuilder<SqlServerDbContext>().UseSqlServer(connString).Options;
 

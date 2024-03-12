@@ -14,7 +14,7 @@ namespace BlazorWebAssemblyProjectTest.Shared
         [ForeignKey(nameof(QuestionId))]
         public Question Question { get; set; }
         public string Name { get; set; }
-		public string SelfTypeId { get; set; }
+		public int SelfTypeId { get; set; }
         [ForeignKey(nameof(SelfTypeId))]
         public SelfType SelfType { get; set; }
 
