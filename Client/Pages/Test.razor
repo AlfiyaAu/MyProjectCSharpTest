@@ -1,7 +1,11 @@
 ﻿@page "/test"
-@using BlazorWebAssemblyProjectTest.Shared
-@using Microsoft.EntityFrameworkCore
+
+@using BlazorWebAssemblyProjectTest.Shared;
+@using Microsoft.EntityFrameworkCore;
 @using BlazorWebAssemblyProjectTest; 
+
+
+@inject NavigationManager NavigMened
 
 
 @inject HttpClient Http
@@ -28,9 +32,15 @@ else
                 <br />
                 <br />
                 <br />
-            <button type="button" class="form_btm1" id="form_btm_id"> Совсем не про меня </button>
+            <button type="button" class="form_btm1" id="form_btm_id">  
+                @foreach (var ansver in answers)
+                    {
+                        @ansver.Name
+                    } 
+            </button>
+
                 <br />
-            <button type="button" class="form_btm1" id="form_btm_id"> Скорее не про меня </button>
+                <button type="button" class="form_btm1" id="form_btm_id">  @* @ans1 *@ </button>
                 <br />
             <button type="button" class="form_btm1" id="form_btm_id"> Скорее про меня </button>
                 <br />
@@ -47,19 +57,19 @@ else
                 }
         </div>
 
-        <div class="form_btm1"> 
-        @foreach (var ansver in new List<Answer>())
+       @*  <div class="form_btm1"> 
+        @foreach (var ansver in answers)
                 {
                     @ansver.Name
                 }
-        </div>
+        </div> *@
 
 
         <div class="Next">
               <br />
         @if (questions.CurrentPage == questions.NumberPage)
         {
-             <button class="form_btm" @onclick="AnsTest"> Узнать результат </button>
+             <button class="form_btm" @onclick="OnResult"> Узнать результат </button>
         }
         else
         {
@@ -96,8 +106,8 @@ else
     {
         if (questions.CurrentPage < questions.NumberPage)
         {
-        await DataLoad(questions.CurrentPage + 1);
-        await Http.GetFromJsonAsync<Answer[]>("api/question");
+            await DataLoad(questions.CurrentPage + 1);
+            await Http.GetFromJsonAsync<Answer[]>("api/question");
 
         }
     }
@@ -105,12 +115,44 @@ else
     private async Task DataLoad(int page)
     {
         questions = await Http.GetFromJsonAsync<QuestionPart>($"api/question/{page}");
-        
+
     }
 
-    private async Task AnsTest()
+    // private async Task AnsTest()
+    //     {
+    //         answers = await Http.GetFromJsonAsync<Answer[]>("api/question");
+
+    //     }
+
+    public void OnResult()
     {
-        answers = await Http.GetFromJsonAsync<Answer[]>("api/question");
+        NavigMened.NavigateTo("/result");
+    }
+
+    private async Task СalculationPersent()
+    {
+        var a1 = 0;
+        var a2 = 0;
+        var a3 = 0;
+
+        var ans1 = answers.FirstOrDefault(x => x.SelfTypeId == 1);
+        var ans2 = answers.FirstOrDefault(x => x.SelfTypeId == 2);
+        var ans3 = answers.FirstOrDefault(x => x.SelfTypeId == 3);
+
+        // if (ans1 == 1)
+        // {
+        //     a += 1;
+        // }
+
+
+        if (questions.CurrentPage == questions.NumberPage)
+        {
+            int SelfType1 = (a1 / (a1 + a2 + a3)) * 100;
+            int SelfType2 = (a2 / (a1 + a2 + a3)) * 100;
+            int SelfType3 = (a3 / (a1 + a2 + a3)) * 100;
+        }
 
     }
+
+
 }

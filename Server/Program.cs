@@ -1,4 +1,5 @@
 using BlazorWebAssemblyProjectTest.Server.DB;
+using BlazorWebAssemblyProjectTest.Shared;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,14 @@ namespace BlazorWebAssemblyProjectTest
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //SqlServerDbContextFactory sqlServerDbContextFactory = new SqlServerDbContextFactory();
+            //SqlServerDbContext context = sqlServerDbContextFactory.CreateDbContext(new string[0]);
+
+            //foreach(var ansver in context.Answers)
+            //    {
+            //        ansver.Name
+            //    };
 
             // Add services to the container.
 

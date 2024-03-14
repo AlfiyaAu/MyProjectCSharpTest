@@ -9,6 +9,7 @@ namespace BlazorWebAssemblyProjectTest.Server.DB
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<SelfType> SelfTypes { get; set; }
+        public DbSet<SelfType> Users { get; set; }
 
         public SqlServerDbContext(DbContextOptions options) : base(options)
         {

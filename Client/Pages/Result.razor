@@ -13,11 +13,25 @@
 <br>
 <br>
 
+<EditForm Model="@newUser" class="contacts_form" OnSubmit="CreateUser">
+    <div>
+        <h5> Ваше имя </h5>
+        <InputText class="form" placeholder="Введите ваше имя" @bind-Value="newUser.Name"></InputText>
+    </div>
+    <br>				
+    <br>
+    <br>				
+    <br>
+    <div class="Next">
+        <button type="submit" class="form_btm"> Отправить результат </button>
+    </div>
+</EditForm>
+
 <div class="contacts_form">
 
     <form name="cont_form" action="">
-        <div class=""> Ваше имя </div>
-        <input type="text" name="name1" id="name2" placeholder="Введите ваше имя" class="form"> 
+    @*     <div class=""> Ваше имя </div>
+        <input type="text" name="name1" id="name2" placeholder="Введите ваше имя" class="form">  *@
         <br>			
         <br>
         <div class=""> Ваш адрес эл. почты </div>
@@ -26,11 +40,12 @@
         <br>				
     </form> 
 </div> 
-<div class="Next">
+@* <div class="Next">
     <!-- <input type="submit" value="Отправить" class="form_btm"> -->          
     <button type="button" class="form_btm" id="form_btm_id"> Отправить результат </button>
-</div>
+</div> *@
 
+<div class="Next"> @test </div>
 
 
 
@@ -66,13 +81,23 @@ else
             }
         </tbody>
     </table>
-}
+}-->
 
 @code {
-    private WeatherForecast[]? forecasts;
 
-    protected override async Task OnInitializedAsync()
+    private User newUser = new User();
+    private string test = "";
+
+    private async Task CreateUser()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        test = "test";
+        // await Http.PostAsJsonAsync<User>("api/question", new User()
+        // {
+        //     Name = "Elena"
+        // });
+        // await DataLoad(newUser);
     }
-} -->
+
+
+
+}
