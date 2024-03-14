@@ -68,11 +68,11 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
         //	}
         //}
 
-        [HttpPost]
-        public ActionResult<User> Post(User user)
-        {
-            users.Add(user);
-            return Ok(user);
-        }
+        //[HttpPost]
+        //public ActionResult<User> Post(User user)
+        //{
+        //    users.Add(user);
+        //    return Ok(user);
+        //}
     }
 }
