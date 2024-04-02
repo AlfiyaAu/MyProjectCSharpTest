@@ -1,0 +1,48 @@
+﻿@page "/newQuestion"
+@using BlazorWebAssemblyProjectTest.Shared
+@inject HttpClient Http
+
+<PageTitle>NewQuestion</PageTitle>
+
+<Link href="/css/styles.css" rel="stylesheet" type="text/css" />
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<h1>@message</h1>
+<EditForm Model="@newQuestion" OnSubmit="CreateQuestion">
+    <div>
+        <h5> Текст вопроса (Name) </h5>
+        <InputText  @bind-Value="newQuestion.Name"></InputText>
+    </div>
+
+        <div>
+        <h5> Тип вопроса (Type) </h5>
+        <InputNumber  @bind-Value="newQuestion.Type"></InputNumber>
+    </div>			
+   
+    <div class="Next">
+        <button type="submit"> Создать вопрос </button>
+    </div>
+</EditForm>
+
+
+@code {
+
+    private Question newQuestion = new Question();
+    private string message = "";
+
+    private async Task CreateQuestion()
+    {
+        message = "Create";
+        await Http.PostAsJsonAsync<Question>("api/question", newQuestion);
+        
+        
+    }
+    // await DataLoad(newUser);
+
+}

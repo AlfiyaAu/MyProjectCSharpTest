@@ -11,47 +11,92 @@
 @inject HttpClient Http
 
 <Link href="/css/styles.css" rel="stylesheet" type="text/css" />
+@* <Link href="/css/stylesTest.css" rel="stylesheet" type="text/css" /> *@
 
 <PageTitle>Test</PageTitle>
 
 
-@if (questions == null)
+@if (questionInfo == null)
 {
         <p><em>Load question...</em></p>
 }
 else
 {
-       <br />
-            <br />
-            <br />
-        <div class="Question">
+    <br />
+    <br />
+    <br />
+@*         <div class="Question">
             <p> Я люблю изучать психологию и все что связано с мышлением</p>
-        </div>
-        <br />
-        <div class="One_answer">
+@*         </div> *@
+@*         <br />
+        <div class="One_answer"> *@
                 <br />
                 <br />
                 <br />
-            <button type="button" class="form_btm1" id="form_btm_id">  
+          @*   <button type="button" class="form_btm1" id="form_btm_id">  
                 @foreach (var ansver in answers)
                     {
                         @ansver.Name
                     } 
-            </button>
-
-                <br />
-                <button type="button" class="form_btm1" id="form_btm_id">  @* @ans1 *@ </button>
-                <br />
+            </button> *@
+@* 
+                <br 
+@*                 <br />
             <button type="button" class="form_btm1" id="form_btm_id"> Скорее про меня </button>
                 <br />
             <button type="button" class="form_btm1" id="form_btm_id"> Точно про меня </button>
                 <br />
-            <button type="button" class="form_btm1" id="form_btm_id"> Зутрудняюсь ответить </button>  
+            <button type="button" class="form_btm1" id="form_btm_id"> Зутрудняюсь ответить </button>   *@
+         @*        <br />
+         <div> *@
+    <div class="Question">
+            
+            
+            @if (questionInfo.Question != null && questionInfo.Answers != null)
+            {
+                                        <div class="Quest">@questionInfo.Question.Name </div>
+              @* @questionInfo.Question.Name  *@
+         
                 <br />
-        </div>
+                <br />
+                <br />
+ 
+            @foreach (var answer in questionInfo.Answers)
+            {
+                            <div class="Quest">
+                    <button type="button" class="form_btm1 @(UserAnswers.Contains(answer) ? "answer-check" : "answer-uncheck")" id="form_btm_id" @onclick="(() => SelectAnswer(answer))">
+                        @answer.Name
+                    </button>
+                </div>
+                <br />
 
-        <div class="Question">
-            @foreach (var question in questions.Question)
+            }
+
+                <div class="Next">
+                    <p>@errorMessage</p>
+                    <button class="form_btm" @onclick="OnNext">
+                        @if (questionInfo.CurrentId == questionInfo.CountId)
+                            {
+                                 <button class="form_btm" @onclick="OnResult"> Узнать результат </button>
+                            }
+                    else
+                    {
+                                    <span>Далее</span>
+                    }
+                        </button>
+               </div>
+                    <br />
+               <div class="page">
+                        <span> @questionInfo.CurrentId / @questionInfo.CountId </span>
+               </div>
+        }
+    </div>
+}
+
+
+
+
+@*             @foreach (var question in questions.Question)
                 {
                     @question.Name
                 }
@@ -63,7 +108,7 @@ else
                     @ansver.Name
                 }
         </div> *@
-
+@* 
 
         <div class="Next">
               <br />
@@ -81,9 +126,8 @@ else
             <br />
         <div class="page">
             <span> @questions.CurrentPage / @questions.NumberPage </span>
-        </div>
+        </div> * *@
 
-}
 
 <!--  <h1>Counter</h1>
 
@@ -92,37 +136,109 @@ else
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button> -->
 
 @code {
-    private QuestionPart questions;
-    private Answer[]? answers;
+    private string errorMessage = ""; // для вывода сообщений ошибок
+
+    private QuestionPartInfo questionInfo; // вся информация о вопросе
+    private List<Answer> UserAnswers = new(); // список для хранения ответов
+
+    int t1 = 0;
+    int t2 = 0;
+    int t3 = 0;
+
+    int SelfType1;
+    int SelfType2;
+    int SelfType3;
+
+    int arrayST;
 
     protected override async Task OnInitializedAsync()
     {
-        await DataLoad (1);
-        answers = await Http.GetFromJsonAsync<Answer[]>("api/question/");
+        await QuestionLoad(0); // начинаем всегда с 0
 
     }
 
-    private async Task Next()
+    private async Task OnNext()
     {
-        if (questions.CurrentPage < questions.NumberPage)
-        {
-            await DataLoad(questions.CurrentPage + 1);
-            await Http.GetFromJsonAsync<Answer[]>("api/question");
+        errorMessage = "";
 
+        bool isNext = false; // проверяем дан ли ответ
+        foreach (var item in questionInfo.Answers)
+        {
+            if (UserAnswers.Contains(item))
+            {
+                isNext = true;
+            }
+        }
+
+        if (isNext)
+        {
+            if (questionInfo.CurrentId != questionInfo.CountId)
+            {
+                await QuestionLoad(questionInfo.Question.Id);
+            }
+            else
+            {
+                foreach (var item in UserAnswers) // это нужно для исправления ошибки валидации
+                {
+                    item.SelfType = new SelfType() { Id = 0, Name = "" }; // это нужно для исправления ошибки валидации
+                }
+
+                var result = await Http.PostAsJsonAsync("api/question/final", UserAnswers.ToArray());
+                var id = await result.Content.ReadAsStringAsync();
+
+                NavigMened.NavigateTo($"/result/{id}");
+            }
+        }
+        else
+        {
+            if (questionInfo.Question.Type == 0)
+            {
+                errorMessage = "Выберите ответ";
+            }
+            else
+            {
+                errorMessage = "Выберите ответы";
+            }
         }
     }
 
-    private async Task DataLoad(int page)
+    private async Task QuestionLoad(int number)
     {
-        questions = await Http.GetFromJsonAsync<QuestionPart>($"api/question/{page}");
-
+        questionInfo = await Http.GetFromJsonAsync<QuestionPartInfo>($"api/question/{number}");
     }
 
-    // private async Task AnsTest()
-    //     {
-    //         answers = await Http.GetFromJsonAsync<Answer[]>("api/question");
-
-    //     }
+    private async Task SelectAnswer(Answer answer)
+    {
+        if (questionInfo.Question.Type == 0) // если вопрос требует один ответ
+        {
+            if (UserAnswers.Contains(answer))
+            {
+                UserAnswers.Remove(answer);
+            }
+            else
+            {
+                foreach (var item in questionInfo.Answers)
+                {
+                    if (UserAnswers.Contains(item))
+                    {
+                        UserAnswers.Remove(item);
+                    }
+                }
+                UserAnswers.Add(answer);
+            }
+        }
+        else // в противном случае
+        {
+            if (UserAnswers.Contains(answer))
+            {
+                UserAnswers.Remove(answer);
+            }
+            else
+            {
+                UserAnswers.Add(answer);
+            }
+        }
+    }
 
     public void OnResult()
     {
@@ -131,28 +247,93 @@ else
 
     private async Task СalculationPersent()
     {
-        var a1 = 0;
-        var a2 = 0;
-        var a3 = 0;
-
-        var ans1 = answers.FirstOrDefault(x => x.SelfTypeId == 1);
-        var ans2 = answers.FirstOrDefault(x => x.SelfTypeId == 2);
-        var ans3 = answers.FirstOrDefault(x => x.SelfTypeId == 3);
-
-        // if (ans1 == 1)
-        // {
-        //     a += 1;
-        // }
-
-
-        if (questions.CurrentPage == questions.NumberPage)
+        foreach (var answer in UserAnswers)
         {
-            int SelfType1 = (a1 / (a1 + a2 + a3)) * 100;
-            int SelfType2 = (a2 / (a1 + a2 + a3)) * 100;
-            int SelfType3 = (a3 / (a1 + a2 + a3)) * 100;
+            if (answer.SelfTypeId == 1)
+            {
+                t1 += 1;
+            }
+            if (answer.SelfTypeId == 2)
+            {
+                t2 += 1;
+            }
+            if (answer.SelfTypeId == 3)
+            {
+                t3 += 1;
+            }
         }
 
+        if (questionInfo.CurrentId == questionInfo.CountId)
+        {
+            int SelfType1 = (t1 / (t1 + t2 + t3)) * 100;
+            int SelfType2 = (t2 / (t1 + t2 + t3)) * 100;
+            int SelfType3 = (t3 / (t1 + t2 + t3)) * 100;
+        }
+
+        int[] arrayST = new int[] { SelfType1, SelfType2, SelfType3 };
     }
+
+
+
+
+    // private QuestionPart questions;
+    // private Answer[]? answers;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await DataLoad (1);
+    //     answers = await Http.GetFromJsonAsync<Answer[]>("api/question/");
+
+    // }
+
+    // private async Task Next()
+    // {
+    //     if (questions.CurrentPage < questions.NumberPage)
+    //     {
+    //         await DataLoad(questions.CurrentPage + 1);
+    //         await Http.GetFromJsonAsync<Answer[]>("api/question");
+
+    //     }
+    // }
+
+    // private async Task DataLoad(int page)
+    // {
+    //     questions = await Http.GetFromJsonAsync<QuestionPart>($"api/question/{page}");
+
+    // }
+
+    // // private async Task AnsTest()
+    // //     {
+    // //         answers = await Http.GetFromJsonAsync<Answer[]>("api/question");
+
+    // //     }
+
+
+
+    // private async Task СalculationPersent()
+    // {
+    //     var a1 = 0;
+    //     var a2 = 0;
+    //     var a3 = 0;
+
+    //     var ans1 = answers.FirstOrDefault(x => x.SelfTypeId == 1);
+    //     var ans2 = answers.FirstOrDefault(x => x.SelfTypeId == 2);
+    //     var ans3 = answers.FirstOrDefault(x => x.SelfTypeId == 3);
+
+    //     // if (ans1 == 1)
+    //     // {
+    //     //     a += 1;
+    //     // }
+
+
+    //     if (questions.CurrentPage == questions.NumberPage)
+    //     {
+    //         int SelfType1 = (a1 / (a1 + a2 + a3)) * 100;
+    //         int SelfType2 = (a2 / (a1 + a2 + a3)) * 100;
+    //         int SelfType3 = (a3 / (a1 + a2 + a3)) * 100;
+    //     }
+
+    // }
 
 
 }

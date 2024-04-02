@@ -2,7 +2,9 @@
 
 @inject NavigationManager NavigMened
 
-<Link href="/css/styles.css" rel="stylesheet" type="text/css" />
+<Link href="/IndexStyles.css" rel="stylesheet" type="text/css" />
+<Link href="/IndexStyles1.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
 <PageTitle>Index</PageTitle>
 
@@ -13,9 +15,29 @@
 	</div>
 </EditForm>  -->  
 
-<img alt="icon-512" src="/icon-512.png" /> 
+<div class = "text_blok">
+	 <div  > 
+		 <p class = "text_test"> <b> ТЕСТ: </b> ОПРЕДЕЛИ СВОИ  <b style= "color: crimson;">  КЛЮЧЕВЫЕ АРХЕТИПЫ </b> ЛИЧНОСТИ </p>
+	</div>
 
-<div class="contacts_form">
+	<div class = "text_test1">
+		<b> Этот тест </b> - первый шаг по построению сильного личного бренда. Благодаря ему ты узнаешь свои ведущие архетипы и сможешь использовать их для определния своей уникальности и суперсилы!
+
+	</div>
+
+	<div>
+		<div class = "text_test2"> Как пройти тест: </div>
+		<p class = "text_test3"> Тест состоит из 10 вопросов, где тебе будет необходимо выбирать наиболее подходящие для тебя утверждения</p>
+		<p class = "text_test3"> Для наиболее точного результата я рекомендую выделить 10 мин времени, не отвлекаться и отвечать на вопросы максимально честно и вдумчиво</p>
+		<p class = "text_test3"> После прохождения теста необходимо будет указать контактные данные</p>
+
+	</div>
+</div>
+ 
+ 
+
+<div class="form">
+	<img alt="vl2" src="/vl2.png" style= "width: 450px; height: 450px;"/> 
 	<form name="cont_form" action="">
 		<br>			
 		<br>				
@@ -27,6 +49,10 @@
                 
 </div>  
 	
+
+<div class = "ref">
+	<a href = "https://localhost:7182/newQuestion" target="_blank" > редактирование теста </a>
+</div>
 
 @code {
 

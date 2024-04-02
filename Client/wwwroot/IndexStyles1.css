@@ -1,0 +1,79 @@
+﻿body {
+    background: mistyrose;
+    
+}
+
+.text_blok {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin-left: 15%;
+    margin-bottom: 45px;
+}
+
+.text_test {
+    font-family: Playfair Display SC;
+    font-size: 40px;
+    Line-height: 20px;
+    color: #2f1503;
+    margin-bottom: 45px;
+    margin-top: 2%;
+}
+
+.text_test1 {
+    font-family: Source Sans Pro;
+    font-style: Semibold;
+    font-size: 25px;
+    line-height: 20px;
+    color: #2f1503;
+    margin-bottom: 35px;
+}
+
+.text_test2 {
+    font-family: Source Sans Pro;
+    font-style: Semibold;
+    font-size: 25px;
+    line-height: 20px;
+    color: #2f1503;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.text_test3 {
+    font-family: Source Sans Pro;
+    font-style: Regular;
+    font-size: 18px;
+    line-height: 1px;
+    color: #2f1503;
+    margin-bottom: 25px;
+}
+
+.form {
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form_btm {
+    font-family: Verdana;
+    font-style: Semibold;
+    font-size: 15px;
+    font-weight: bold;
+    color: darkslateblue;
+    background: chocolate;
+    border: 0px;
+    width: 160px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+}
+
+.ref {
+    height: 130px;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+}
