@@ -64,7 +64,7 @@ else
             @foreach (var answer in questionInfo.Answers)
             {
                             <div class="Quest">
-                    <button type="button" class="form_btm1 @(UserAnswers.Contains(answer) ? "answer-check" : "answer-uncheck")" id="form_btm_id" @onclick="(() => SelectAnswer(answer))">
+                                <button type="button" class="form_btm1 @(UserAnswers.Contains(answer) ? "answer-check" : "answer-uncheck")" id="form_btm_id" @onclick="(() => SelectAnswer(answer))">
                         @answer.Name
                     </button>
                 </div>
@@ -77,7 +77,7 @@ else
                     <button class="form_btm" @onclick="OnNext">
                         @if (questionInfo.CurrentId == questionInfo.CountId)
                             {
-                                 <button class="form_btm" @onclick="OnResult"> Узнать результат </button>
+                                             <button class="form_btm" @onclick="OnResult" > Узнать результат </button>
                             }
                     else
                     {
@@ -140,14 +140,15 @@ else
 
     private QuestionPartInfo questionInfo; // вся информация о вопросе
     private List<Answer> UserAnswers = new(); // список для хранения ответов
+    private UserSelfType userSelfType = new UserSelfType();
 
     int t1 = 0;
     int t2 = 0;
     int t3 = 0;
 
-    int SelfType1;
-    int SelfType2;
-    int SelfType3;
+    int selfType1 = 0;
+    int selfType2 = 0;
+    int selfType3 = 0;
 
     int arrayST;
 
@@ -240,10 +241,7 @@ else
         }
     }
 
-    public void OnResult()
-    {
-        NavigMened.NavigateTo("/result");
-    }
+
 
     private async Task СalculationPersent()
     {
@@ -265,13 +263,70 @@ else
 
         if (questionInfo.CurrentId == questionInfo.CountId)
         {
-            int SelfType1 = (t1 / (t1 + t2 + t3)) * 100;
-            int SelfType2 = (t2 / (t1 + t2 + t3)) * 100;
-            int SelfType3 = (t3 / (t1 + t2 + t3)) * 100;
+            int selfType1 = (t1 / (t1 + t2 + t3)) * 100;
+            int selfType2 = (t2 / (t1 + t2 + t3)) * 100;
+            int selfType3 = (t3 / (t1 + t2 + t3)) * 100;
         }
 
-        int[] arrayST = new int[] { SelfType1, SelfType2, SelfType3 };
+        int[] arrayST = new int[] { selfType1, selfType2, selfType3 };
     }
+
+    private async Task OnResult()
+    {
+        foreach (var ans in UserAnswers)
+            {
+
+                if (ans.SelfTypeId == 1)
+                {
+                    t1 += 1;
+                }
+                else if (ans.SelfTypeId == 2)
+                {
+                    t2 += 1;
+                }
+                else if (ans.SelfTypeId == 3)
+                {
+                    t3 += 1;
+                }
+            }
+
+        int selfType1 = (t1 / (t1 + t2 + t3)) * 100;
+        int selfType2 = (t2 / (t1 + t2 + t3)) * 100;
+        int selfType3 = (t3 / (t1 + t2 + t3)) * 100;
+
+        // if (questionInfo.CurrentId == questionInfo.CountId)
+        // {
+        //     int selfType1 = (t1 / (t1 + t2 + t3)) * 100;
+        //     int selfType2 = (t2 / (t1 + t2 + t3)) * 100;
+        //     int selfType3 = (t3 / (t1 + t2 + t3)) * 100;
+        // }
+ 
+        
+        NavigMened.NavigateTo("/result");
+
+        userSelfType.Id = 7;
+        userSelfType.Percent1 = selfType1;
+        userSelfType.Percent2 = selfType1;
+        userSelfType.Percent3 = selfType1;
+        userSelfType.Name = null;
+
+
+        if (arrayST != null)
+            {
+                await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
+            }
+        else await QuestionLoad(0);
+    }
+
+   //  private async Task PostPersent()
+   //  {
+   //      if (arrayST != null)
+   //      {
+   //          message = $"{selfType1}, {selfType2}, {selfType3}";
+   //          await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
+   //      }
+   //      else await QuestionLoad(0);
+   // }
 
 
 

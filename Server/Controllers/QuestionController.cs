@@ -77,17 +77,17 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
 
 
         [HttpPost("final")]
-        public ActionResult<UserSelfType> FinalTest([FromBody] int[] selfTypes)
+        public ActionResult<UserSelfType> FinalTest([FromBody] UserSelfType userSelfType)
         {
-            var userST1 = new UserSelfType()
-            {
-                Percent = selfTypes,
-                Name = null
-            };
-            _context.UserSelfTypes.Add(userST1);
+            //var userST1 = new UserSelfType()
+            //{
+            //    Percent = selfTypes,
+            //    Name = null
+            //};
+            _context.UserSelfTypes.Add(userSelfType);
             _context.SaveChanges();
 
-            return Ok(userST1);
+            return Ok(userSelfType);
         }
 
         // здесь должна быть логика подсчёта и сохранение истории
