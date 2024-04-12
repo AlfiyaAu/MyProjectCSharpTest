@@ -10,7 +10,8 @@
 
 @inject HttpClient Http
 
-<Link href="/css/styles.css" rel="stylesheet" type="text/css" />
+<Link href="/css/styles2.css" rel="stylesheet" type="text/css" />
+@* <Link href="/css/styles.css" rel="stylesheet" type="text/css" /> *@
 @* <Link href="/css/stylesTest.css" rel="stylesheet" type="text/css" /> *@
 
 <PageTitle>Test</PageTitle>
@@ -50,25 +51,32 @@ else
          @*        <br />
          <div> *@
     <div class="Question">
-            
-            
+           
+        
             @if (questionInfo.Question != null && questionInfo.Answers != null)
             {
-                                        <div class="Quest">@questionInfo.Question.Name </div>
-              @* @questionInfo.Question.Name  *@
+                                                    <div class="Quest">@questionInfo.Question.Name </div>
+                @* @questionInfo.Question.Name  *@
+
+                            <br />
+                            <br />
+                            <br />
+
+        
+
          
-                <br />
-                <br />
-                <br />
- 
             @foreach (var answer in questionInfo.Answers)
             {
-                            <div class="Quest">
-                                <button type="button" class="form_btm1 @(UserAnswers.Contains(answer) ? "answer-check" : "answer-uncheck")" id="form_btm_id" @onclick="(() => SelectAnswer(answer))">
-                        @answer.Name
-                    </button>
-                </div>
-                <br />
+                
+
+                                        <div class="Quest">
+                                                <button type="button" class="form_btm1 @(UserAnswers.Contains(answer) ? "answer-check" : "answer-uncheck")" id="form_btm_id" @onclick="(() => SelectAnswer(answer))">
+                            @answer.Name
+                                    </button>
+                                </div>
+                                <br /> 
+                
+
 
             }
 
@@ -77,7 +85,25 @@ else
                     <button class="form_btm" @onclick="OnNext">
                         @if (questionInfo.CurrentId == questionInfo.CountId)
                             {
-                                             <button class="form_btm" @onclick="OnResult" > Узнать результат </button>
+
+
+                                             <EditForm Model="@userSelfType" class="contacts_form" OnSubmit="OnResult">
+                                                <div>
+                                                    <h5> Ваше имя </h5>
+                                                    <InputText class="form" placeholder="Введите ваше имя" @bind-Value="userSelfType.Name"></InputText>
+                                                </div>
+                                                <br>				
+                                                <br>
+                                                              <div>
+                                                                <h5> Ваше имя </h5>
+                                                                            <InputText class="form" placeholder="Введите ваше имя" @bind-Value="userSelfType.Email"></InputText>
+                                                            </div>
+                                                <br>				
+                                                <br>
+                                                <div>
+                                                                       <button class="form_btm" @onclick="OnResult" > Узнать результат </button> </div>
+                                            </EditForm>
+                                             
                             }
                     else
                     {
@@ -139,16 +165,18 @@ else
     private string errorMessage = ""; // для вывода сообщений ошибок
 
     private QuestionPartInfo questionInfo; // вся информация о вопросе
-    private List<Answer> UserAnswers = new(); // список для хранения ответов
+    public List<Answer> UserAnswers = new(); // список для хранения ответов
+  
+    
     private UserSelfType userSelfType = new UserSelfType();
+
+   
 
     int t1 = 0;
     int t2 = 0;
     int t3 = 0;
 
-    int selfType1 = 0;
-    int selfType2 = 0;
-    int selfType3 = 0;
+    private string test = "";
 
     int arrayST;
 
@@ -208,7 +236,7 @@ else
         questionInfo = await Http.GetFromJsonAsync<QuestionPartInfo>($"api/question/{number}");
     }
 
-    private async Task SelectAnswer(Answer answer)
+    public async Task SelectAnswer(Answer answer)
     {
         if (questionInfo.Question.Type == 0) // если вопрос требует один ответ
         {
@@ -241,58 +269,60 @@ else
         }
     }
 
+    // private async Task СalculationPersent()
+    // {
+    //     foreach (var answer in UserAnswers)
+    //     {
+    //         if (answer.SelfTypeId == 1)
+    //         {
+    //             t1 += 1;
+    //         }
+    //         if (answer.SelfTypeId == 2)
+    //         {
+    //             t2 += 1;
+    //         }
+    //         if (answer.SelfTypeId == 3)
+    //         {
+    //             t3 += 1;
+    //         }
+    //     }
 
+    //     if (questionInfo.CurrentId == questionInfo.CountId)
+    //     {
+    //         selfType1 = (t1 / (t1 + t2 + t3)) * 100;
+    //         selfType2 = (t2 / (t1 + t2 + t3)) * 100;
+    //         selfType3 = (t3 / (t1 + t2 + t3)) * 100;
+    //     }
 
-    private async Task СalculationPersent()
+    //     int[] arrayST = new int[] { selfType1, selfType2, selfType3 };
+    // }
+
+    private async Task OnResult()
     {
-        foreach (var answer in UserAnswers)
+        test = "test";
+        foreach (var ans in UserAnswers)
         {
-            if (answer.SelfTypeId == 1)
+
+            if (ans.SelfTypeId == 1)
             {
                 t1 += 1;
             }
-            if (answer.SelfTypeId == 2)
+            else if (ans.SelfTypeId == 2)
             {
                 t2 += 1;
             }
-            if (answer.SelfTypeId == 3)
+            else if (ans.SelfTypeId == 3)
             {
                 t3 += 1;
             }
         }
 
-        if (questionInfo.CurrentId == questionInfo.CountId)
-        {
-            int selfType1 = (t1 / (t1 + t2 + t3)) * 100;
-            int selfType2 = (t2 / (t1 + t2 + t3)) * 100;
-            int selfType3 = (t3 / (t1 + t2 + t3)) * 100;
-        }
 
-        int[] arrayST = new int[] { selfType1, selfType2, selfType3 };
-    }
+        int sum = t1 + t2 + t3;
 
-    private async Task OnResult()
-    {
-        foreach (var ans in UserAnswers)
-            {
-
-                if (ans.SelfTypeId == 1)
-                {
-                    t1 += 1;
-                }
-                else if (ans.SelfTypeId == 2)
-                {
-                    t2 += 1;
-                }
-                else if (ans.SelfTypeId == 3)
-                {
-                    t3 += 1;
-                }
-            }
-
-        int selfType1 = (t1 / (t1 + t2 + t3)) * 100;
-        int selfType2 = (t2 / (t1 + t2 + t3)) * 100;
-        int selfType3 = (t3 / (t1 + t2 + t3)) * 100;
+        float selfType1 = (float) t1 / sum * 100;
+        float selfType2 = (float) t2 / sum * 100;
+        float selfType3 = (float) t3 / sum * 100;
 
         // if (questionInfo.CurrentId == questionInfo.CountId)
         // {
@@ -304,18 +334,20 @@ else
         
         NavigMened.NavigateTo("/result");
 
-        userSelfType.Id = 7;
+        userSelfType.Id = 3;
         userSelfType.Percent1 = selfType1;
-        userSelfType.Percent2 = selfType1;
-        userSelfType.Percent3 = selfType1;
-        userSelfType.Name = null;
+        userSelfType.Percent2 = selfType2;
+        userSelfType.Percent3 = selfType3;
+        // userSelfType.Name = null;
 
 
-        if (arrayST != null)
-            {
-                await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
-            }
-        else await QuestionLoad(0);
+        await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
+
+        // if (arrayST != null)
+        //     {
+        //         await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
+        //     }
+        // else await QuestionLoad(0);
     }
 
    //  private async Task PostPersent()
@@ -389,6 +421,9 @@ else
     //     }
 
     // }
+
+
+   
 
 
 }

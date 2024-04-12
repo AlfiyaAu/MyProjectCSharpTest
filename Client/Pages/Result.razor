@@ -1,5 +1,9 @@
 ﻿@page "/result"
 @using BlazorWebAssemblyProjectTest.Shared
+@using BlazorWebAssemblyProjectTest.Client
+@using Microsoft.EntityFrameworkCore;
+@using System.Net;
+@using System.Net.Mail;
 @inject HttpClient Http
 
 <PageTitle>Result</PageTitle>
@@ -45,8 +49,11 @@
     <button type="button" class="form_btm" id="form_btm_id"> Отправить результат </button>
 </div> *@
 
-<div class="Next"> @test </div>
+<div>
+    <button type="submit" class="form_btm" @onclick = "SendResult"> Отправить результат2 </button>
+</div>
 
+<div class="Next"> @test </div>
 
 
 
@@ -88,6 +95,14 @@ else
     private User newUser = new User();
     private string test = "";
 
+    public List<Answer> UserAnswers;
+    private UserSelfType userSelfType = new UserSelfType();
+
+    int t1 = 0;
+    int t2 = 0;
+    int t3 = 0;
+
+
     private async Task CreateUser()
     {
         test = "test";
@@ -98,6 +113,69 @@ else
         // await DataLoad(newUser);
     }
 
+  
+   static void SendResult()
+        {
+
+        // //smtp сервер
+        // string smtpHost = "smtp.gmail.com";
+        // //smtp порт
+        // int smtpPort = 587;
+        // // //логин
+        // // string login = "login";
+        // // //пароль
+        // // string pass = "pass";
+
+        // //создаем подключение
+        // SmtpClient client = new SmtpClient(smtpHost, smtpPort);
+        // // client.Credentials = new NetworkCredential(login, pass);
+
+        // //От кого письмо
+        // string from = "Tom";
+        // //Кому письмо
+        // string to = "aauisheva2008@yandex.ru";
+        // //Тема письма
+        // string subject = "Письмо от C Sharp";
+        // //Текст письма
+        // string body = "Привет! /* \n\n\n  */Это тестовое письмо от C Sharp";
+
+        // //Создаем сообщение
+        // MailMessage mess = new MailMessage(from, to, subject, body);
+        // client.Send(mess);
+
+        // try
+        // {
+        //     client.Send(mess);
+        //     // Console.WriteLine("Message send");
+        // }
+        // catch (Exception ex)
+        // {
+        //     // Console.WriteLine(ex.ToString());
+        //     // Console.ReadKey();
+        //     String test = "!!!";
+        // }
+
+
+            // отправитель - устанавливаем адрес и отображаемое в письме имя
+            MailAddress from = new MailAddress("Tom");
+            // кому отправляем
+            MailAddress to = new MailAddress("aauisheva2008@yandex.ru");
+            // создаем объект сообщения
+            MailMessage m = new MailMessage(from, to);
+            // тема письма
+            m.Subject = "Тест";
+            // текст письма
+            m.Body = "<h2>Письмо-тест работы smtp-клиента</h2>";
+            // письмо представляет код html
+            m.IsBodyHtml = true;
+            // адрес smtp-сервера и порт, с которого будем отправлять письмо
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            // логин и пароль
+            // smtp.Credentials = new NetworkCredential("somemail@gmail.com", "mypassword");
+            // smtp.EnableSsl = true;
+            smtp.Send(m);
+            // Console.Read();
+        }
 
 
 }

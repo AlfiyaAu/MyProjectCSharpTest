@@ -1,6 +1,10 @@
 ﻿@page "/newQuestion"
 @using BlazorWebAssemblyProjectTest.Shared
+
+
 @inject HttpClient Http
+
+@attribute [Authorize]
 
 <PageTitle>NewQuestion</PageTitle>
 

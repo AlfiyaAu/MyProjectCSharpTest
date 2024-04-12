@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebAssemblyProjectTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebAssemblyProjectTest.Shared", "Shared\BlazorWebAssemblyProjectTest.Shared.csproj", "{5FA7D4C9-1A11-432A-BC53-4DD3170B3CE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPi", "..\WebAPi\WebAPi.csproj", "{6C884620-6FCA-4210-9C9D-D2CC29C753CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPi", "..\WebAPi\WebAPi.csproj", "{6C884620-6FCA-4210-9C9D-D2CC29C753CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

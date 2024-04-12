@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BlazorWebAssemblyProjectTest.Shared
 {
-    public class User
-    {
-        public string Name { get; set; }
+	public class Admin
+	{
+		public string Login { get; set; }
 
-    }
+		public string Password { get; set; }
+	}
 }

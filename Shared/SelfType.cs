@@ -18,10 +18,11 @@ namespace BlazorWebAssemblyProjectTest.Shared
     {
         [Key]
         public int Id { get; set; }
-        public int Percent1 { get; set; }
-        public int Percent2 { get; set; }
-        public int Percent3 { get; set; }
+        public float Percent1 { get; set; }
+        public float Percent2 { get; set; }
+        public float Percent3 { get; set; }
         public string? Name { get; set; }
+        public string? Email { get; set; }
     }
 
     public class UserST
