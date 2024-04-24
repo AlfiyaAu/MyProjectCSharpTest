@@ -1,0 +1,52 @@
+﻿@page "/register"
+@using Blazored.LocalStorage
+
+@inject ILocalStorageService localStorage
+@inject AuthenticationStateProvider stateProvider
+
+@inject NavigationManager NavMen
+@inject HttpClient client
+
+<h3>Register</h3>
+
+<EditForm Model="users" OnSubmit="RegisterAction">
+
+	<label> Login </label>
+	<InputText @bind-Value="users.Login"> </InputText>
+	<br/>
+@* 	<label> Name </label>
+	<InputText @bind-Value="user.Name"> </InputText>
+	<label> Password </label> *@
+	<InputText @bind-Value="users.Password"> </InputText>
+	<br/>
+	<button type="submit"> Register </button>
+
+</EditForm>
+
+@code {
+
+	User users = new User();
+
+	async Task RegisterAction()
+	{
+		var result = await client.PostAsJsonAsync("api/user", users);
+
+		NavMen.NavigateTo("/NewQuestion");
+	}
+
+	// async Task LoginAction()
+	// {
+
+	// 	var result = await client.PostAsJsonAsync("api/admin/gettoken", admin);
+	// 	var token = result.Content.ReadAsStringAsync();
+		
+
+
+	// 	await localStorage.SetItemAsync("token", token);
+	// 	await stateProvider.GetAuthenticationStateAsync();
+
+
+	// 	NavMen.NavigateTo("/NewQuestion");
+
+	// }
+}

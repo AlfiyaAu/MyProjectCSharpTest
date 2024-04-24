@@ -28,7 +28,7 @@
 	async Task LoginAction()
 	{
 
-		var result = await client.PostAsJsonAsync("api/admin/gettoken", admin);
+		var result = await client.PostAsJsonAsync("api/user/gettoken", admin);
 		var token = result.Content.ReadAsStringAsync();
 		
 

@@ -8,53 +8,77 @@ using Microsoft.AspNetCore.Identity;
 namespace BlazorWebAssemblyProjectTest.Server.Controllers
 { 
     [ApiController]
-    [Route("api/admin")] //gettoken
+    [Route("api/user")] //gettoken
     public class AdminController : Controller
     {
         private readonly ILogger<AdminController> _logger;
 
-        public AdminController(ILogger<AdminController> logger)
+        //public AdminController(ILogger<AdminController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
+        private UserManager<User> _userManager;
+        private SignInManager<User> _signInManager;
+
+        public AdminController(ILogger<AdminController> logger, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _logger = logger;
-        }
-
-        private UserManager<Admin> _adminManager;
-        private SignInManager<Admin> _signInManager;
-
-        public AdminController(UserManager<Admin> adminManager, SignInManager<Admin> signInManager)
-        {
-            _adminManager = adminManager;
+			_userManager = userManager;
             _signInManager = signInManager;
         }
 
         [HttpGet]
         public IActionResult Login()
         {
-            return View("Login", new Admin());
+            return View("Login", new User());
         }
 
-        //[HttpPost]
-        //public IActionResult Login(Admin admin)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View("Login", admin);
-        //    }
-        //    return View("NewQuestion", admin);
-        //}
 
         [HttpPost]
-        public async Task<IActionResult> Login(Admin admin)
+        public async Task<IActionResult> Login(User user)
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(admin.Login, admin.Password, false, false);
+                var result = await _signInManager.PasswordSignInAsync(user.Login, user.Password, false, false);
                 if (result.Succeeded)
                 {
-                    return View("NewQuestion", admin);
+                    return View("NewQuestion", user);
                 }
             }
-            return View("Login", admin);
+            return View("Login", user);
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View("Register", new User());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(User users)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = new User()
+                {
+                    UserName = users.Login,
+                    Password = users.Password
+                };
+                var result = await _userManager.CreateAsync(user, user.Password);
+                if (result.Succeeded)
+                {
+                    return Login();
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+            return View("Register", users);
         }
 
 
@@ -70,6 +94,17 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
 
             return Ok(str);
         }
+
+
+        ////[HttpPost]
+        ////public IActionResult Login(Admin admin)
+        ////{
+        ////    if (!ModelState.IsValid)
+        ////    {
+        ////        return View("Login", admin);
+        ////    }
+        ////    return View("NewQuestion", admin);
+        ////}
 
     }
 }
