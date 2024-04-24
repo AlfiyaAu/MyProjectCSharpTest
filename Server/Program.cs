@@ -1,7 +1,11 @@
+using System.Text;
+using Blazored.LocalStorage;
 using BlazorWebAssemblyProjectTest.Server.DB;
 using BlazorWebAssemblyProjectTest.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlazorWebAssemblyProjectTest
 {
@@ -31,8 +35,26 @@ namespace BlazorWebAssemblyProjectTest
             //builder.Services.AddControllersWithViews();
             //builder.Services.AddRazorPages();
 
+            builder.Services.AddAuthorization();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = JwtOptions.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = JwtOptions.Audience,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = JwtOptions.GetKey(),
+                    ValidateIssuerSigningKey = true
+
+                };
+            });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddHttpClient();
 
             var app = builder.Build();
 
@@ -57,12 +79,33 @@ namespace BlazorWebAssemblyProjectTest
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
 
             //app.MapRazorPages();
             app.MapControllers();
             app.MapFallbackToFile("index.html");
 
             app.Run();
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddBlazoredLocalStorage();
+        }
+    }
+
+    public class JwtOptions
+    {
+        public static string Issuer = "Server";
+        public static string Audience = "Client";
+        public static string Key = "SecretKeySecretKeySecretKeySecretKeySecretKey!";
+        public static SymmetricSecurityKey GetKey()
+        {
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key));
         }
     }
 }

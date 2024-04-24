@@ -7,6 +7,13 @@ using System.Linq;
 using BlazorWebAssemblyProjectTest.Server;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.EntityFrameworkCore;
+using Blazored.LocalStorage.StorageOptions;
+using System;
+using Blazored.LocalStorage;
+using System.Net.Http.Json;
+
+
+
 
 namespace BlazorWebAssemblyProjectTest.Server.Controllers
 {
@@ -88,6 +95,22 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
             _context.SaveChanges();
 
             return Ok(userSelfType);
+        }
+
+
+        [HttpGet]
+        public ActionResult<IEnumerable<UserSelfType>> Get()
+        {
+   
+
+            //var result = _context.UserSelfTypes.FirstOrDefault(x => x.Id == 4);
+            //var result = _context.UserSelfTypes.Where(x => x.Id != null);
+
+            //if (result != null)
+            {
+                return Ok(_context.UserSelfTypes);
+            }
+            //return NotFound($"Not found product with name = ");
         }
 
         // здесь должна быть логика подсчёта и сохранение истории

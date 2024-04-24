@@ -6,13 +6,16 @@
 
 
 @inject NavigationManager NavigMened
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 
 @inject HttpClient Http
 
-<Link href="/css/styles2.css" rel="stylesheet" type="text/css" />
+<Link href="/TestStyles.css" rel="stylesheet" type="text/css" />
+@* <Link href="/css/styles2.css" rel="stylesheet" type="text/css" /> *@
 @* <Link href="/css/styles.css" rel="stylesheet" type="text/css" /> *@
 @* <Link href="/css/stylesTest.css" rel="stylesheet" type="text/css" /> *@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
 <PageTitle>Test</PageTitle>
 
@@ -50,6 +53,8 @@ else
             <button type="button" class="form_btm1" id="form_btm_id"> Зутрудняюсь ответить </button>   *@
          @*        <br />
          <div> *@
+
+    
     <div class="Question">
            
         
@@ -82,36 +87,73 @@ else
 
                 <div class="Next">
                     <p>@errorMessage</p>
-                    <button class="form_btm" @onclick="OnNext">
+                  
+@* 
+                @if (questionInfo.CurrentId == questionInfo.CountId)
+                {
+                    <EditForm Model="@userSelfType" class="contacts_form" OnSubmit="OnResult">
+                        <div class="label_form">
+                            <label> Ваше имя </label>
+                            <InputText class="form" placeholder="Введите ваше имя" @bind-Value="userSelfType.Name"></InputText>
+                        </div>
+                        <br>
+                        <br>
+                        <div>
+                            <label> Ваш эл. адрес </label>
+                            <InputText class="form" placeholder="Введите ваш эл. адрес" @bind-Value="userSelfType.Email"></InputText>
+                        </div>
+                        <br>
+                        <br>
+                    </EditForm>
+                } *@
+
+
+                <button class="form_btm"  @onclick="OnNext">
                         @if (questionInfo.CurrentId == questionInfo.CountId)
                             {
 
 
-                                             <EditForm Model="@userSelfType" class="contacts_form" OnSubmit="OnResult">
-                                                <div>
-                                                    <h5> Ваше имя </h5>
+@*                                              <EditForm Model="@userSelfType" class="contacts_form" OnSubmit="OnResult">
+                                                <div class="label_form">
+                                                     <label> Ваше имя </label> 
                                                     <InputText class="form" placeholder="Введите ваше имя" @bind-Value="userSelfType.Name"></InputText>
                                                 </div>
                                                 <br>				
                                                 <br>
                                                               <div>
-                                                                <h5> Ваше имя </h5>
-                                                                            <InputText class="form" placeholder="Введите ваше имя" @bind-Value="userSelfType.Email"></InputText>
+                                                    <label> Ваш эл. адрес </label> 
+                                                    <InputText class="form" placeholder="Введите ваш эл. адрес" @bind-Value="userSelfType.Email"></InputText>
                                                             </div>
                                                 <br>				
                                                 <br>
-                                                <div>
-                                                                       <button class="form_btm" @onclick="OnResult" > Узнать результат </button> </div>
-                                            </EditForm>
+                                            </EditForm> *@
+
+                        <div>
+                            <button class="form_btm2" @onclick="OnResult"> Узнать результат </button>
+                        </div>
+
+                        <br>
+                        <br>
                                              
                             }
                     else
                     {
-                                    <span>Далее</span>
+                        <div >
+                            <span >Далее</span>
+                        </div>
+                        
                     }
                         </button>
+@* 
+                <div>
+                    <button class="form_btm2" @onclick="SendResult"> Узнать результат2 </button>
+                </div> *@
+
+
                </div>
                     <br />
+
+            <h3>@Message</h3>
                <div class="page">
                         <span> @questionInfo.CurrentId / @questionInfo.CountId </span>
                </div>
@@ -166,15 +208,19 @@ else
 
     private QuestionPartInfo questionInfo; // вся информация о вопросе
     public List<Answer> UserAnswers = new(); // список для хранения ответов
-  
-    
-    private UserSelfType userSelfType = new UserSelfType();
 
-   
+
+    private UserSelfType userSelfType = new UserSelfType();
 
     int t1 = 0;
     int t2 = 0;
     int t3 = 0;
+
+    Double selfType1;
+    Double selfType2;
+    Double selfType3;
+
+    string Message = "";
 
     private string test = "";
 
@@ -320,9 +366,9 @@ else
 
         int sum = t1 + t2 + t3;
 
-        float selfType1 = (float) t1 / sum * 100;
-        float selfType2 = (float) t2 / sum * 100;
-        float selfType3 = (float) t3 / sum * 100;
+        Double selfType1 = (Double)t1 / sum * 100;
+        Double selfType2 = (Double)t2 / sum * 100;
+        Double selfType3 = (Double)t3 / sum * 100;
 
         // if (questionInfo.CurrentId == questionInfo.CountId)
         // {
@@ -330,19 +376,26 @@ else
         //     int selfType2 = (t2 / (t1 + t2 + t3)) * 100;
         //     int selfType3 = (t3 / (t1 + t2 + t3)) * 100;
         // }
- 
-        
-        NavigMened.NavigateTo("/result");
 
-        userSelfType.Id = 3;
+        string b = Guid.NewGuid().ToString();
+
+        
+
+        // userSelfType.Id = 7;
         userSelfType.Percent1 = selfType1;
         userSelfType.Percent2 = selfType2;
         userSelfType.Percent3 = selfType3;
-        // userSelfType.Name = null;
+        userSelfType.IdUser = b;
 
 
         await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
 
+        await localStorage.SetItemAsync("userID", b);
+
+        NavigMened.NavigateTo("/result");
+
+
+        // }
         // if (arrayST != null)
         //     {
         //         await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
@@ -350,15 +403,15 @@ else
         // else await QuestionLoad(0);
     }
 
-   //  private async Task PostPersent()
-   //  {
-   //      if (arrayST != null)
-   //      {
-   //          message = $"{selfType1}, {selfType2}, {selfType3}";
-   //          await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
-   //      }
-   //      else await QuestionLoad(0);
-   // }
+    //  private async Task PostPersent()
+    //  {
+    //      if (arrayST != null)
+    //      {
+    //          message = $"{selfType1}, {selfType2}, {selfType3}";
+    //          await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
+    //      }
+    //      else await QuestionLoad(0);
+    // }
 
 
 
@@ -422,8 +475,58 @@ else
 
     // }
 
+    // private async Task SendResult()
+    // {
 
-   
+    //     foreach (var ans in UserAnswers)
+    //     {
+
+    //         if (ans.SelfTypeId == 1)
+    //         {
+    //             t1 += 1;
+    //         }
+    //         else if (ans.SelfTypeId == 2)
+    //         {
+    //             t2 += 1;
+    //         }
+    //         else if (ans.SelfTypeId == 3)
+    //         {
+    //             t3 += 1;
+    //         }
+    //     }
+
+
+    //     int sum = t1 + t2 + t3;
+
+    //     float selfType1 = (float)t1 / sum * 100;
+    //     float selfType2 = (float)t2 / sum * 100;
+    //     float selfType3 = (float)t3 / sum * 100;
+
+        
+    //     float[] arrayST = new float[] {selfType1, selfType2, selfType3};
+
+
+
+
+    //     for (int i = 0; i <= arrayST.Length; i++)
+    //     {
+    //         if (selfType1 > selfType2 && selfType1 > selfType3)
+    //             {
+    //                 Message = $"Ваш ключевой тип личности selfType1 - {selfType1}%";
+    //             }
+
+    //         if (selfType2 > selfType1 && selfType2 > selfType3)
+    //             {
+    //                 Message = $"Ваш ключевой тип личности selfType1 - {selfType2}%";
+    //             }
+    //         if (selfType3 > selfType1 && selfType3 > selfType2)
+    //             {
+    //                 Message = $"Ваш ключевой тип личности selfType1 - {selfType3}%";
+    //             }
+            
+    //     }
+
+    // }
 
 
 }

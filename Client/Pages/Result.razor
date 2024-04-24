@@ -2,14 +2,21 @@
 @using BlazorWebAssemblyProjectTest.Shared
 @using BlazorWebAssemblyProjectTest.Client
 @using Microsoft.EntityFrameworkCore;
+@using BlazorWebAssemblyProjectTest;
 @using System.Net;
 @using System.Net.Mail;
+@using System.Net.Http.Json;
+@using System.Text.Json;
 @inject HttpClient Http
+@* @inject HttpClient Https *@
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <PageTitle>Result</PageTitle>
 
 <Link href="/css/styles.css" rel="stylesheet" type="text/css" />
 
+<div class="Next"> @res </div>
+
 <br>
 <br>
 <br>
@@ -17,10 +24,10 @@
 <br>
 <br>
 
-<EditForm Model="@newUser" class="contacts_form" OnSubmit="CreateUser">
+@* <EditForm Model="@userSelfType" class="contacts_form" OnSubmit="CreateUser">
     <div>
         <h5> Ваше имя </h5>
-        <InputText class="form" placeholder="Введите ваше имя" @bind-Value="newUser.Name"></InputText>
+        <InputText class="form" placeholder="Введите ваше имя" @bind-Value="userSelfType.Email"></InputText>
     </div>
     <br>				
     <br>
@@ -30,12 +37,12 @@
         <button type="submit" class="form_btm"> Отправить результат </button>
     </div>
 </EditForm>
-
+ *@
 <div class="contacts_form">
 
     <form name="cont_form" action="">
-    @*     <div class=""> Ваше имя </div>
-        <input type="text" name="name1" id="name2" placeholder="Введите ваше имя" class="form">  *@
+        <div class=""> Ваше имя </div>
+        <input type="text" name="name1" id="name2" placeholder="Введите ваше имя" class="form"> 
         <br>			
         <br>
         <div class=""> Ваш адрес эл. почты </div>
@@ -46,14 +53,20 @@
 </div> 
 @* <div class="Next">
     <!-- <input type="submit" value="Отправить" class="form_btm"> -->          
-    <button type="button" class="form_btm" id="form_btm_id"> Отправить результат </button>
+    <button type="button" class="form_btm" id="form_btm_id" @onclick="(() => GetUserSelfTypePersent(userSelfTypes))"> Отправить результат </button>
 </div> *@
 
 <div>
     <button type="submit" class="form_btm" @onclick = "SendResult"> Отправить результат2 </button>
 </div>
 
-<div class="Next"> @test </div>
+@* <div class="Next"> @test </div> *@
+
+@* <div class="Next"> @userSelfType.Name </div> *@
+
+@* <div class="Next"> @endResult </div> *@
+
+<div class="Next"> @message </div>
 
 
 
@@ -92,90 +105,173 @@ else
 
 @code {
 
+    string res;
+    double endResult;
+
+    double selfType1;
+    double selfType2;
+    double selfType3;
+
     private User newUser = new User();
     private string test = "";
 
     public List<Answer> UserAnswers;
-    private UserSelfType userSelfType = new UserSelfType();
-
-    int t1 = 0;
-    int t2 = 0;
-    int t3 = 0;
+    public IEnumerable<UserSelfType> userSelfTypes;
+    // private UserSelfType userSelfType = new UserSelfType();
 
 
-    private async Task CreateUser()
+    string message = "";
+
+    // private async Task CreateUser()
+    // {
+    //     test = "test";
+    //     // await Http.PostAsJsonAsync<User>("api/question", new User()
+    //     // {
+    //     //     Name = "Elena"
+    //     // });
+    //     // await DataLoad(newUser);
+    // }
+
+
+
+    public async Task SendResult()
     {
-        test = "test";
-        // await Http.PostAsJsonAsync<User>("api/question", new User()
-        // {
-        //     Name = "Elena"
-        // });
-        // await DataLoad(newUser);
+
+        res = await localStorage.GetItemAsync<string>("userID");
+
+
+        userSelfTypes = await Http.GetFromJsonAsync<IEnumerable<UserSelfType>>($"api/question");
+
+        double selfType1 = userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent1;
+        double selfType2 = userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent2;
+        double selfType3 = userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent3;
+
+        double[] arrayST = new double[] { selfType1, selfType2, selfType3 };
+
+
+        for (int i = 0; i <= arrayST.Length; i++)
+        {
+            if (selfType1 > selfType2 && selfType1 > selfType3)
+            {
+                message = $"Ваш ключевой тип личности selfType1 - {selfType1}%";
+            }
+
+            else if (selfType2 > selfType1 && selfType2 > selfType3)
+            {
+                message = $"Ваш ключевой тип личности selfType2 - {selfType2}%";
+            }
+            else if(selfType3 > selfType1 && selfType3 > selfType2)
+            {
+                message = $"Ваш ключевой тип личности selfType3 - {selfType3}%";
+            }
+            else
+            {
+                message = "Error!!!";
+            }
+
+        }
+
+
     }
 
+    // public async Task GetUserSelfTypePersent(IEnumerable<UserSelfType> userSelfTypes)
+    // {
+    //     // return userSelf.First(c => c.Name == res).Percent1;
+    //     // return userSelf.First(c => c.Name == res).Percent2;
+    //     // return userSelf.First(c => c.Name == res).Percent3;
+
+    //     selfType1 = userSelfTypes.First(c => c.Name == res).Percent1;
+    //     selfType2 = userSelfTypes.First(c => c.Name == res).Percent2;
+    //     selfType3 = userSelfTypes.First(c => c.Name == res).Percent3;
+
+    //     double[] arrayST = new double[] { selfType1, selfType2, selfType3 };
+
+
+    //     for (int i = 0; i <= arrayST.Length; i++)
+    //     {
+    //         if (selfType1 > selfType2 && selfType1 > selfType3)
+    //             {
+    //                 message = $"Ваш ключевой тип личности selfType1 - {selfType1}%";
+    //             }
+
+    //         if (selfType2 > selfType1 && selfType2 > selfType3)
+    //             {
+    //                 message = $"Ваш ключевой тип личности selfType1 - {selfType2}%";
+    //             }
+    //         if (selfType3 > selfType1 && selfType3 > selfType2)
+    //             {
+    //                 message = $"Ваш ключевой тип личности selfType1 - {selfType3}%";
+    //             }
+
+    //     }
+
+    // }
   
-   static void SendResult()
-        {
-
-        // //smtp сервер
-        // string smtpHost = "smtp.gmail.com";
-        // //smtp порт
-        // int smtpPort = 587;
-        // // //логин
-        // // string login = "login";
-        // // //пароль
-        // // string pass = "pass";
-
-        // //создаем подключение
-        // SmtpClient client = new SmtpClient(smtpHost, smtpPort);
-        // // client.Credentials = new NetworkCredential(login, pass);
-
-        // //От кого письмо
-        // string from = "Tom";
-        // //Кому письмо
-        // string to = "aauisheva2008@yandex.ru";
-        // //Тема письма
-        // string subject = "Письмо от C Sharp";
-        // //Текст письма
-        // string body = "Привет! /* \n\n\n  */Это тестовое письмо от C Sharp";
-
-        // //Создаем сообщение
-        // MailMessage mess = new MailMessage(from, to, subject, body);
-        // client.Send(mess);
-
-        // try
-        // {
-        //     client.Send(mess);
-        //     // Console.WriteLine("Message send");
-        // }
-        // catch (Exception ex)
-        // {
-        //     // Console.WriteLine(ex.ToString());
-        //     // Console.ReadKey();
-        //     String test = "!!!";
-        // }
+   // static void SendResult()
+   //      {
 
 
-            // отправитель - устанавливаем адрес и отображаемое в письме имя
-            MailAddress from = new MailAddress("Tom");
-            // кому отправляем
-            MailAddress to = new MailAddress("aauisheva2008@yandex.ru");
-            // создаем объект сообщения
-            MailMessage m = new MailMessage(from, to);
-            // тема письма
-            m.Subject = "Тест";
-            // текст письма
-            m.Body = "<h2>Письмо-тест работы smtp-клиента</h2>";
-            // письмо представляет код html
-            m.IsBodyHtml = true;
-            // адрес smtp-сервера и порт, с которого будем отправлять письмо
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            // логин и пароль
-            // smtp.Credentials = new NetworkCredential("somemail@gmail.com", "mypassword");
-            // smtp.EnableSsl = true;
-            smtp.Send(m);
-            // Console.Read();
-        }
+   //      // questionInfo = await Http.GetFromJsonAsync<UserSelfType>($"api/question/{number}");
+
+   //      // // // // // // // //smtp сервер
+   //      // // // // // // // string smtpHost = "smtp.gmail.com";
+   //      // // // // // // // //smtp порт
+   //      // // // // // // // int smtpPort = 587;
+   //      // // // // // // // // //логин
+   //      // // // // // // // // string login = "login";
+   //      // // // // // // // // //пароль
+   //      // // // // // // // // string pass = "pass";
+
+   //      // // // // // // // //создаем подключение
+   //      // // // // // // // SmtpClient client = new SmtpClient(smtpHost, smtpPort);
+   //      // // // // // // // // client.Credentials = new NetworkCredential(login, pass);
+
+   //      // // // // // // // //От кого письмо
+   //      // // // // // // // string from = "Tom";
+   //      // // // // // // // //Кому письмо
+   //      // // // // // // // string to = "aauisheva2008@yandex.ru";
+   //      // // // // // // // //Тема письма
+   //      // // // // // // // string subject = "Письмо от C Sharp";
+   //      // // // // // // // //Текст письма
+   //      // // // // // // // string body = "Привет! /* \n\n\n  */Это тестовое письмо от C Sharp";
+
+   //      // // // // // // // //Создаем сообщение
+   //      // // // // // // // MailMessage mess = new MailMessage(from, to, subject, body);
+   //      // // // // // // // client.Send(mess);
+
+   //      // // // // // // // try
+   //      // // // // // // // {
+   //      // // // // // // //     client.Send(mess);
+   //      // // // // // // //     // Console.WriteLine("Message send");
+   //      // // // // // // // }
+   //      // // // // // // // catch (Exception ex)
+   //      // // // // // // // {
+   //      // // // // // // //     // Console.WriteLine(ex.ToString());
+   //      // // // // // // //     // Console.ReadKey();
+   //      // // // // // // //     String test = "!!!";
+   //      // // // // // // // }
+
+
+   //          // // отправитель - устанавливаем адрес и отображаемое в письме имя
+   //          // MailAddress from = new MailAddress("Tom");
+   //          // // кому отправляем
+   //          // MailAddress to = new MailAddress("aauisheva2008@yandex.ru");
+   //          // // создаем объект сообщения
+   //          // MailMessage m = new MailMessage(from, to);
+   //          // // тема письма
+   //          // m.Subject = "Тест";
+   //          // // текст письма
+   //          // m.Body = "<h2>Письмо-тест работы smtp-клиента</h2>";
+   //          // // письмо представляет код html
+   //          // m.IsBodyHtml = true;
+   //          // // адрес smtp-сервера и порт, с которого будем отправлять письмо
+   //          // SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+   //          // // логин и пароль
+   //          // // smtp.Credentials = new NetworkCredential("somemail@gmail.com", "mypassword");
+   //          // // smtp.EnableSsl = true;
+   //          // smtp.Send(m);
+   //          // // Console.Read();
+   //      }
 
 
 }

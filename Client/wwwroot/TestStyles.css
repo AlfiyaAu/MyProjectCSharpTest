@@ -1,0 +1,178 @@
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+body {
+    background: mistyrose;
+}
+
+
+.Question {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.form_btm1 {
+    font-family: Source Sans Pro;
+    font-style: Semibold;
+    font-size: 15px;
+    color: black;
+    background: white;
+    border: 0px;
+    width: 300px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+}
+
+
+.form_btm {
+    font-family: Verdana;
+    font-style: Semibold;
+    font-size: 15px;
+    color: black;
+    background: chocolate;
+    border: 0px;
+    width: 180px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+
+.form_btm2 {
+    font-family: Verdana;
+    font-style: Semibold;
+    font-size: 15px;
+    color: black;
+    background: chocolate;
+    border: 0px;
+    width: 150px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+}
+
+.Next {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 170px;
+}
+
+/*.label_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+*/
+/*.contacts_form {
+    display: flex;
+    justify-content: center;
+}
+
+.text_arkh {
+    color: crimson
+}
+
+
+.form {
+    background: lightgray;
+    opacity: 10%;
+    width: 120%;
+    height: 60px;
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-size: 25px;
+    margin-bottom: 15px;
+    border: 0;
+    padding: 5px;
+    padding-left: 10px;
+    border-radius: 10px;
+}
+
+.form_btm {
+    font-family: Source Sans Pro;
+    font-style: Semibold;
+    font-size: 15px;
+    color: black;
+    background: red;
+    border: 0px;
+    width: 160px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+}
+
+.Test {
+    display: flex;
+    justify-content: center;
+}
+
+.form_btm1 {
+    font-family: Source Sans Pro;
+    font-style: Semibold;
+    font-size: 15px;
+    color: black;
+    background: white;
+    border: 0px;
+    width: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.Question {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.Quest {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+.One_answer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 705px
+}
+
+.Next {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-left: 705px
+}
+
+
+.form_btm:hover {
+    background: rgb(68, 52, 30);
+    color: white;
+    text-decoration: none;
+}
+*/

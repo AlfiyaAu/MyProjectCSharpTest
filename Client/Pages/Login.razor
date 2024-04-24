@@ -1,11 +1,11 @@
 ﻿@page "/login"
-@* @using Blazored.LocalStorage *@
+@using Blazored.LocalStorage
 
-@* @inject ILocalStorageService localStorage *@
-@* @inject AuthenticationStateProvider stateProvider *@
+@inject ILocalStorageService localStorage
+@inject AuthenticationStateProvider stateProvider
 
 @inject NavigationManager NavMen
-@* @inject HttpClient client *@
+@inject HttpClient client
 
 <h3>Login</h3>
 
@@ -28,16 +28,16 @@
 	async Task LoginAction()
 	{
 
-		// var result = await client.PostAsJsonAsync("api/admin/gettoken", admin);
-		// var token = result.Content.ReadAsStringAsync();
+		var result = await client.PostAsJsonAsync("api/admin/gettoken", admin);
+		var token = result.Content.ReadAsStringAsync();
 		
 
 
-		// await localStorage.SetItemAsync("token", token);
-		// await stateProvider.GetAuthenticationStateAsync();
+		await localStorage.SetItemAsync("token", token);
+		await stateProvider.GetAuthenticationStateAsync();
 
 
-		// NavMen.NavigateTo("/NewQuestion");
+		NavMen.NavigateTo("/NewQuestion");
 
 	}
 }

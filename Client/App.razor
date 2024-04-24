@@ -1,11 +1,11 @@
 ﻿@using BlazorWebAssemblyProjectTest.Client.Components
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" /> 
-          @*   <NotAuthorized>
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" > 
+            <NotAuthorized>
                 <LoginRedirect />
-            </NotAuthorized> *@
-     @*    </AuthorizeRouteView> *@
+            </NotAuthorized>
+        </AuthorizeRouteView>
 
 
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />

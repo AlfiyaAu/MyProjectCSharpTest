@@ -16,12 +16,12 @@ namespace BlazorWebAssemblyProjectTest.Shared
 
     public class UserSelfType
     {
+        //public int Id { get; set; }
+        public double Percent1 { get; set; }
+        public double Percent2 { get; set; }
+        public double Percent3 { get; set; }
         [Key]
-        public int Id { get; set; }
-        public float Percent1 { get; set; }
-        public float Percent2 { get; set; }
-        public float Percent3 { get; set; }
-        public string? Name { get; set; }
+        public string IdUser { get; set; }
         public string? Email { get; set; }
     }
 

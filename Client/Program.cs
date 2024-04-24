@@ -66,14 +66,14 @@ namespace BlazorWebAssemblyProjectTest.Client
 			return keys.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
 		}
 
-		public static byte[] ParseJwt(string jwt)
-		{
-			switch (jwt.Length % 4)
-			{
-				case 2: jwt += "=="; break;
-				case 3: jwt += "="; break;
-			}
-			return Convert.FromBase64String(jwt);
-		}
-	}
+        public static byte[] ParseJwt(string jwt)
+        {
+            switch (jwt.Length % 4)
+            {
+                case 2: jwt += "=="; break;
+                case 3: jwt += "="; break;
+            }
+            return Convert.FromBase64String(jwt);
+        }
+    }
 }
