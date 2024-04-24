@@ -33,28 +33,29 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
             return View("Login", new Admin());
         }
 
-        [HttpPost]
-        public IActionResult Login(Admin admin)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("Login", admin);
-            }
-            return View("NewQuestion", admin);
-        }
-
-        //public async Task<IActionResult> Login(Admin admin)
+        //[HttpPost]
+        //public IActionResult Login(Admin admin)
         //{
-        //    if (ModelState.IsValid)
+        //    if (!ModelState.IsValid)
         //    {
-        //        var result = await _signInManager.PasswordSignInAsync(admin.Login, admin.Password, false, false);
-        //        if (result.Succeeded)
-        //        {
-        //            return View("NewQuestion", admin);
-        //        }
+        //        return View("Login", admin);
         //    }
-        //    return View("Login", admin);
+        //    return View("NewQuestion", admin);
         //}
+
+        [HttpPost]
+        public async Task<IActionResult> Login(Admin admin)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(admin.Login, admin.Password, false, false);
+                if (result.Succeeded)
+                {
+                    return View("NewQuestion", admin);
+                }
+            }
+            return View("Login", admin);
+        }
 
 
         [HttpPost("gettoken")]
