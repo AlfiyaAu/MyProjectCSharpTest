@@ -18,33 +18,42 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
             _logger = logger;
         }
 
-        //private UserManager<Admin> _adminManager;
-        //private SignInManager<Admin> _signInManager;
+        private UserManager<Admin> _adminManager;
+        private SignInManager<Admin> _signInManager;
 
-        //public AdminController(UserManager<Admin> adminManager, SignInManager<Admin> signInManager)
-        //{
-        //    _adminManager = adminManager;
-        //    _signInManager = signInManager;
-        //}
+        public AdminController(UserManager<Admin> adminManager, SignInManager<Admin> signInManager)
+        {
+            _adminManager = adminManager;
+            _signInManager = signInManager;
+        }
 
-        //[HttpGet]
-        //public IActionResult Login()
-        //{
-        //    return View("Login", new Admin());
-        //}
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View("Login", new Admin());
+        }
 
+        [HttpPost]
+        public IActionResult Login(Admin admin)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Login", admin);
+            }
+            return View("NewQuestion", admin);
+        }
 
-        //public async Task<IActionResult> Login(Admin model)
+        //public async Task<IActionResult> Login(Admin admin)
         //{
         //    if (ModelState.IsValid)
         //    {
-        //        var result = await _signInManager.PasswordSignInAsync(model.Login, model.Password, false, false);
+        //        var result = await _signInManager.PasswordSignInAsync(admin.Login, admin.Password, false, false);
         //        if (result.Succeeded)
         //        {
-        //            return View("NewQuestion", model);
+        //            return View("NewQuestion", admin);
         //        }
         //    }
-        //    return View("Login", model);
+        //    return View("Login", admin);
         //}
 
 

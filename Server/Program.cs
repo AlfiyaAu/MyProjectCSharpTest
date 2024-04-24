@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using BlazorWebAssemblyProjectTest.Server.DB;
 using BlazorWebAssemblyProjectTest.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,11 +26,13 @@ namespace BlazorWebAssemblyProjectTest
 
             // Add services to the container.
 
-            var connString = "Server=(localdb)\\mssqllocaldb;Database=TestDatabase123;Trusted_Connection=True;";
+            var connString = "Server=(localdb)\\mssqllocaldb;Database=DatabaseTest125;Trusted_Connection=True;";
             builder.Services.AddDbContext<SqlServerDbContext>(opt => opt.UseSqlServer(connString, builder =>
             {
                 builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
             }));
+
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<SqlServerDbContext>();
 
             builder.Services.AddControllers();
             //builder.Services.AddControllersWithViews();
