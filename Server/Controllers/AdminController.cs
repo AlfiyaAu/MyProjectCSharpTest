@@ -6,17 +6,17 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 
 namespace BlazorWebAssemblyProjectTest.Server.Controllers
-{ 
+{
     [ApiController]
     [Route("api/user")] //gettoken
     public class AdminController : Controller
     {
         private readonly ILogger<AdminController> _logger;
 
-        //public AdminController(ILogger<AdminController> logger)
-        //{
-        //    _logger = logger;
-        //}
+        public AdminController(ILogger<AdminController> logger)
+        {
+            _logger = logger;
+        }
 
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
@@ -24,7 +24,7 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
         public AdminController(ILogger<AdminController> logger, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _logger = logger;
-			_userManager = userManager;
+            _userManager = userManager;
             _signInManager = signInManager;
         }
 
@@ -55,7 +55,7 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
             return View("Register", new User());
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register(User users)
         {
             if (ModelState.IsValid)
@@ -63,7 +63,7 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
                 User user = new User()
                 {
                     UserName = users.Login,
-                    Password = users.Password
+                    //Password = users.Password
                 };
                 var result = await _userManager.CreateAsync(user, user.Password);
                 if (result.Succeeded)
@@ -83,7 +83,7 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
 
 
         [HttpPost("gettoken")]
-        public ActionResult<string> GetToken([FromBody] Admin admin) 
+        public ActionResult<string> GetToken([FromBody] Admin admin)
         {
             var claims = new List<Claim>() { new Claim(ClaimTypes.Name, admin.Login) };
 
@@ -95,16 +95,6 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
             return Ok(str);
         }
 
-
-        ////[HttpPost]
-        ////public IActionResult Login(Admin admin)
-        ////{
-        ////    if (!ModelState.IsValid)
-        ////    {
-        ////        return View("Login", admin);
-        ////    }
-        ////    return View("NewQuestion", admin);
-        ////}
 
     }
 }

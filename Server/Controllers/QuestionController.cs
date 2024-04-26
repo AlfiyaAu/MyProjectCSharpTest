@@ -21,21 +21,21 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
     [Route("api/[controller]")]
     public class QuestionController : ControllerBase
     {
-        //private static List<Question> questions = new List<Question>
-        //{
-        //    new Question {Id = 1, Name = "Question 1", Type= 01},
-        //    new Question {Id = 2, Name = "Question 2", Type= 02},
-        //    new Question {Id = 3, Name = "Question 3", Type= 03}
-        //};
+        //////private static List<Question> questions = new List<Question>
+        //////{
+        //////    new Question {Id = 1, Name = "Question 1", Type= 01},
+        //////    new Question {Id = 2, Name = "Question 2", Type= 02},
+        //////    new Question {Id = 3, Name = "Question 3", Type= 03}
+        //////};
 
-        //      private static List<Answer> answers = new List<Answer>
-        //      {
-        //          new Answer {Id = 01, QuestionId = 1, Name = "Answer 1", SelfTypeId= 1},
-        //          new Answer {Id = 02, QuestionId = 1, Name = "Answer 2", SelfTypeId= 2},
-        //          new Answer {Id = 03, QuestionId = 1, Name = "Answer 3", SelfTypeId= 3},
-        //          new Answer {Id = 04, QuestionId = 2, Name = "Answer 4", SelfTypeId= 4},
-        //          new Answer {Id = 05, QuestionId = 2, Name = "Answer 5", SelfTypeId= 5},
-        //      };
+        //////      private static List<Answer> answers = new List<Answer>
+        //////      {
+        //////          new Answer {Id = 01, QuestionId = 1, Name = "Answer 1", SelfTypeId= 1},
+        //////          new Answer {Id = 02, QuestionId = 1, Name = "Answer 2", SelfTypeId= 2},
+        //////          new Answer {Id = 03, QuestionId = 1, Name = "Answer 3", SelfTypeId= 3},
+        //////          new Answer {Id = 04, QuestionId = 2, Name = "Answer 4", SelfTypeId= 4},
+        //////          new Answer {Id = 05, QuestionId = 2, Name = "Answer 5", SelfTypeId= 5},
+        //////      };
 
         private readonly SqlServerDbContext _context;
 
@@ -61,18 +61,18 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
             };
             return Ok(response); // отсылаем ответ
 
-            //var a = _context.Questions.Where(x => x.Id == page);
-            //int size = 1;
-            //var put = new QuestionPart()
-            //{
-            //	CurrentPage = page,
-            //	NumberPage = 3,
-            //	Question = a,
-            //};
-            //return Ok(put);
+            ////var a = _context.Questions.Where(x => x.Id == page);
+            ////int size = 1;
+            ////var put = new QuestionPart()
+            ////{
+            ////	CurrentPage = page,
+            ////	NumberPage = 3,
+            ////	Question = a,
+            ////};
+            ////return Ok(put);
         }
 
-        [HttpPost]
+        [HttpPost("Quest")]
         public ActionResult<Question> PostQuestions(Question quest)
         {
             //var lastQuest = _context.Questions.OrderBy(quest => quest).LastOrDefault();
@@ -86,11 +86,6 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
         [HttpPost("final")]
         public ActionResult<UserSelfType> FinalTest([FromBody] UserSelfType userSelfType)
         {
-            //var userST1 = new UserSelfType()
-            //{
-            //    Percent = selfTypes,
-            //    Name = null
-            //};
             _context.UserSelfTypes.Add(userSelfType);
             _context.SaveChanges();
 
@@ -101,107 +96,28 @@ namespace BlazorWebAssemblyProjectTest.Server.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<UserSelfType>> Get()
         {
-   
-
-            //var result = _context.UserSelfTypes.FirstOrDefault(x => x.Id == 4);
-            //var result = _context.UserSelfTypes.Where(x => x.Id != null);
-
-            //if (result != null)
             {
                 return Ok(_context.UserSelfTypes);
             }
-            //return NotFound($"Not found product with name = ");
         }
 
-        // здесь должна быть логика подсчёта и сохранение истории
+        [HttpPost("Client")]
+        public ActionResult<Clients> PostClient(Clients client)
+        {
+            _context.Clients.Add(client);
+            _context.SaveChanges();
+            return Ok(client);
+        }
 
-        //int t1 = 0;
-        //int t2 = 0;
-        //int t3 = 0;
-
-        //foreach (var answer in userAnswers)
-        //{
-        //    if (answer.SelfTypeId == 1)
-        //    {
-
-        //    }
-        //    if (answer.SelfTypeId == 2)
-        //    {
-
-        //    }
-        //    if (answer.SelfTypeId == 3)
-        //    {
-
-        //    }
-        //}
-
-
-
-
-        //[HttpPost]
-        //public ActionResult<UserSelfType> Post([FromBody] UserSelfType[] userSelfTypes)
-        //{
-        //    _context.UserSelfType.Add();
-
-        //[HttpPost]
-        //public ActionResult<Product> Post([FromBody] Product product)
-        //    {
-        //        var last = products.LastOrDefault();
-        //        product.Id = last.Id + 1;
-        //        products.Add(product);
-        //        return Ok(product);
-
-
-        //int t1 = 0;
-        //int t2 = 0;
-        //int t3 = 0;
-
-        //foreach (var answer in userAnswers)
-        //{
-        //    if (answer.SelfTypeId == 1)
-        //    {
-
-        //    }
-        //    if (answer.SelfTypeId == 2)
-        //    {
-
-        //    }
-        //    if (answer.SelfTypeId == 3)
-        //    {
-
-        //    }
-        //}
-
-        //    return Ok(2);
-        //}
-
-
-
-        //[HttpGet]
-        //public ActionResult<IEnumerable<Answer>> Get(int id)
-        //{
-        //    var a = _context.Questions.SingleOrDefault(x => x.Id == 2);
-        //    var b = _context.Answers.Where(x => x.QuestionId == a.Id);
-
-        //    return Ok(b);
-    }
-        //[HttpGet("id/{idQ}")]
-        //public ActionResult<Answer> GetAnswer(int idq)
-        //{
-
-
-        //	foreach (var ans in answers.Answer where)
-        //		{
-
-        //	}
-        //}
-
-        //[HttpPost]
-        //public ActionResult<User> Post(User user)
-        //{
-        //    users.Add(user);
-        //    return Ok(user);
-        //}
+        [HttpGet("getClient")]
+        public ActionResult<IEnumerable<Clients>> GetClient()
+        {
+            {
+                return Ok(_context.Clients);
+            }
+        }
 
     }
+
+}
 

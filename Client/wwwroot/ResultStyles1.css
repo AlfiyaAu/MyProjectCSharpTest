@@ -2,9 +2,86 @@
 
 body {
     background: mistyrose;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
+.Edit_form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
 
+.contacts_form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form1 {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form {
+    background: lightgray;
+    opacity: 10%;
+    width: 120%;
+    height: 60px;
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-size: 25px;
+    margin-bottom: 15px;
+    border: 0;
+    padding: 5px;
+    padding-left: 10px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.form_btm2 {
+    font-family: Verdana;
+    font-style: Semibold;
+    font-size: 15px;
+    color: black;
+    background: chocolate;
+    border: 0px;
+    width: 150px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.Next {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 750px;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.Next1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 750px;
+    font-size: 15px;
+    text-align: right
+}
+
+/*
 .Question {
     display: flex;
     flex-direction: column;
@@ -71,6 +148,8 @@ body {
     justify-content: center;
 }
 
+
+*/
 
 
 /*.label_form {

@@ -22,6 +22,9 @@ namespace BlazorWebAssemblyProjectTest.Shared
         public double Percent1 { get; set; }
         public double Percent2 { get; set; }
         public double Percent3 { get; set; }
+        public double Percent4 { get; set; }
+        public double Percent5 { get; set; }
+        public double Percent6 { get; set; }
         public string? Email { get; set; }
     }
 

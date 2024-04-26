@@ -8,57 +8,46 @@
 @using System.Net.Http.Json;
 @using System.Text.Json;
 @inject HttpClient Http
-@* @inject HttpClient Https *@
+@inject HttpClient Https
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <PageTitle>Result</PageTitle>
 
-<Link href="/css/styles.css" rel="stylesheet" type="text/css" />
+@* <Link href="/css/styles.css" rel="stylesheet" type="text/css" /> *@
+<Link href="/ResultStyles1.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
-<div class="Next"> @res </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
-@* <EditForm Model="@userSelfType" class="contacts_form" OnSubmit="CreateUser">
-    <div>
-        <h5> Ваше имя </h5>
-        <InputText class="form" placeholder="Введите ваше имя" @bind-Value="userSelfType.Email"></InputText>
-    </div>
-    <br>				
-    <br>
-    <br>				
-    <br>
-    <div class="Next">
-        <button type="submit" class="form_btm"> Отправить результат </button>
-    </div>
-</EditForm>
- *@
-<div class="contacts_form">
+@* <div class="Next"> @res </div> *@
 
-    <form name="cont_form" action="">
-        <div class=""> Ваше имя </div>
-        <input type="text" name="name1" id="name2" placeholder="Введите ваше имя" class="form"> 
-        <br>			
-        <br>
-        <div class=""> Ваш адрес эл. почты </div>
-        <input type="text" name="name1" id="name2" placeholder="Введите ваш эл. адрес" class="form"> 
-        <br>				
-        <br>				
-    </form> 
-</div> 
-@* <div class="Next">
-    <!-- <input type="submit" value="Отправить" class="form_btm"> -->          
-    <button type="button" class="form_btm" id="form_btm_id" @onclick="(() => GetUserSelfTypePersent(userSelfTypes))"> Отправить результат </button>
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+    <EditForm class="Edit_form" Model="@clients" OnSubmit="SendResult">
+        <div class="contacts_form">
+            <div class = "form1">
+                <h5> Ваше имя </h5>
+            </div>
+
+            <div class="form1">
+                <InputText class="form" placeholder="Введите ваше имя" @bind-Value="clients.Name"></InputText>
+            </div>
+
+            <div class="form1">
+                <button type="submit" class="form_btm2"> Получить результат </button>
+            </div>
+        </div>
+    </EditForm>
+
+
+@* <div>
+    <button type="submit" class="form_btm" @onclick = "SendResult"> Получить результат </button>
 </div> *@
-
-<div>
-    <button type="submit" class="form_btm" @onclick = "SendResult"> Отправить результат2 </button>
-</div>
 
 @* <div class="Next"> @test </div> *@
 
@@ -67,145 +56,167 @@
 @* <div class="Next"> @endResult </div> *@
 
 <div class="Next"> @message </div>
+<div class="Next1"> @message1 </div>
+<div class="Next1"> @message2 </div>
+<div class="Next1"> @message3 </div>
+<div class="Next1"> @message4 </div>
+<div class="Next1"> @message5 </div>
+<div class="Next1"> @message6 </div>
+
+@* 
+        <script>
+               if (window.localStorage) {
+                    var elements = document.querySelectorAll('[name]');
+
+                   for (var i = 0, length = elements.length; i < length; i++) {
+                        (function(element) {
+                             var name = element.getAttribute('name');
+
+                            element.value = localStorage.getItem(name) || '';
+
+                            element.onkeyup = function() {
+                                localStorage.setItem(name, element.value);
+                            };
+                        })(elements[i]);
+                   }
+               }
+        </script> *@
 
 
-
-<!-- <h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
-
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}-->
 
 @code {
 
     string res;
-    double endResult;
+    // double endResult;
 
     double selfType1;
     double selfType2;
     double selfType3;
+    double selfType4;
+    double selfType5;
+    double selfType6;
+
+    string names;
 
     private User newUser = new User();
-    private string test = "";
-
+    // private string test = "";
     public List<Answer> UserAnswers;
     public IEnumerable<UserSelfType> userSelfTypes;
-    // private UserSelfType userSelfType = new UserSelfType();
+    public Clients clients = new Clients();
 
+    public IEnumerable<Clients> clientses;
 
     string message = "";
-
-    // private async Task CreateUser()
-    // {
-    //     test = "test";
-    //     // await Http.PostAsJsonAsync<User>("api/question", new User()
-    //     // {
-    //     //     Name = "Elena"
-    //     // });
-    //     // await DataLoad(newUser);
-    // }
+    string message1 = "";
+    string message2 = "";
+    string message3 = "";
+    string message4 = "";
+    string message5 = "";
+    string message6 = "";
 
 
 
     public async Task SendResult()
     {
-
         res = await localStorage.GetItemAsync<string>("userID");
 
+        clients.IdClient = res;
+
+        await Http.PostAsJsonAsync<Clients>("api/question/Client", clients);
 
         userSelfTypes = await Http.GetFromJsonAsync<IEnumerable<UserSelfType>>($"api/question");
-
-        double selfType1 = userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent1;
-        double selfType2 = userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent2;
-        double selfType3 = userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent3;
-
-        double[] arrayST = new double[] { selfType1, selfType2, selfType3 };
+        clientses = await Http.GetFromJsonAsync<IEnumerable<Clients>>($"api/question/getClient");
 
 
-        for (int i = 0; i <= arrayST.Length; i++)
+        names = clientses.FirstOrDefault(x => x.IdClient == res).Name;
+
+        double selfType1 = (int)Math.Round(userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent1);
+        double selfType2 = (int)Math.Round(userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent2);
+        double selfType3 = (int)Math.Round(userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent3);
+        double selfType4= (int)Math.Round(userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent4);
+        double selfType5 = (int)Math.Round(userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent5);
+        double selfType6 = (int)Math.Round(userSelfTypes.FirstOrDefault(x => x.IdUser == res).Percent6);
+
+        double[] arrayST = new double[] { selfType1, selfType2, selfType3, selfType4, selfType5, selfType6 };
+
+
         {
-            if (selfType1 > selfType2 && selfType1 > selfType3)
+            for (int i = 0; i <= arrayST.Length; i++)
             {
-                message = $"Ваш ключевой тип личности selfType1 - {selfType1}%";
-            }
+                if (selfType1 > selfType2 && selfType1 > selfType3 && selfType1 > selfType4 && selfType1 > selfType5 && selfType1 > selfType6)
+                {
+                    message = $"{names}, Ваш ключевой тип личности ТВОРЕЦ - {selfType1}%.";
+                    message1 = $"Остальные типы личности проявлены менее активно, либо не проявлены совсем:";
+                    message2 = $"ИСКАТЕЛЬ - {selfType2}%";
+                    message3 = $"БУНТАРЬ - {selfType3}%";
+                    message4 = $"ЭСТЕТ - {selfType4}%";
+                    message5 = $"ОПЕКУН - {selfType5}%";
+                    message6 = $"СЛАВНЫЙ МАЛЫЙ - {selfType6}%";
+                }
 
-            else if (selfType2 > selfType1 && selfType2 > selfType3)
-            {
-                message = $"Ваш ключевой тип личности selfType2 - {selfType2}%";
-            }
-            else if(selfType3 > selfType1 && selfType3 > selfType2)
-            {
-                message = $"Ваш ключевой тип личности selfType3 - {selfType3}%";
-            }
-            else
-            {
-                message = "Error!!!";
-            }
+                else if (selfType2 > selfType1 && selfType2 > selfType3 && selfType2 > selfType4 && selfType2 > selfType5 && selfType2 > selfType6)
+                {
+                    message = $"{names}, Ваш ключевой тип личности ИСКАТЕЛЬ - {selfType2}%";
+                    message1 = $"Остальные типы личности проявлены менее активно, либо не проявлены совсем:";
+                    message2 = $"ТВОРЕЦ - {selfType1}%";
+                    message3 = $"БУНТАРЬ - {selfType3}%";
+                    message4 = $"ЭСТЕТ - {selfType4}%";
+                    message5 = $"ОПЕКУН - {selfType5}%";
+                    message6 = $"СЛАВНЫЙ МАЛЫЙ - {selfType6}%";
+                }
+                else if (selfType3 > selfType1 && selfType3 > selfType2 && selfType3 > selfType4 && selfType3 > selfType5 && selfType3 > selfType6)
+                {
+                    message = $"{names}, Ваш ключевой тип личности БУНТАРЬ - {selfType3}%";
+                    message1 = $"Остальные типы личности проявлены менее активно, либо не проявлены совсем:";
+                    message2 = $"ТВОРЕЦ - {selfType1}%";
+                    message3 = $"БУНТАРЬ - {selfType2}%";
+                    message4 = $"ЭСТЕТ - {selfType4}%";
+                    message5 = $"ОПЕКУН - {selfType5}%";
+                    message6 = $"СЛАВНЫЙ МАЛЫЙ - {selfType6}%";
 
+                }
+                else if (selfType4 > selfType1 && selfType4 > selfType2 && selfType4 > selfType3 && selfType4 > selfType5 && selfType4 > selfType6)
+                {
+                    message = $"{names}, Ваш ключевой тип личности ЭСТЕТ - {selfType4}%";
+                    message1 = $"Остальные типы личности проявлены менее активно, либо не проявлены совсем:";
+                    message2 = $"ТВОРЕЦ - {selfType1}%";
+                    message3 = $"ИСКАТЕЛЬ - {selfType2}%";
+                    message4 = $"БУНТАРЬ - {selfType3}%";
+                    message5 = $"ОПЕКУН - {selfType5}%";
+                    message6 = $"СЛАВНЫЙ МАЛЫЙ - {selfType6}%";
+
+                }
+                else if(selfType5 > selfType1 && selfType5 > selfType2 && selfType5 > selfType3 && selfType5 > selfType4 && selfType5 > selfType6)
+                {
+                    message = $"{names}, Ваш ключевой тип личности ОПЕКУН - {selfType5}%.";
+                    message1 = $"Остальные типы личности проявлены менее активно, либо не проявлены совсем:";
+                    message2 = $"ТВОРЕЦ - {selfType1}%";
+                    message3 = $"ИСКАТЕЛЬ - {selfType2}%";
+                    message4 = $"БУНТАРЬ - {selfType3}%";
+                    message5 = $"ЭСТЕТ - {selfType4}%";
+                    message6 = $"СЛАВНЫЙ МАЛЫЙ - {selfType6}%";
+                }
+                else if (selfType6 > selfType1 && selfType6 > selfType2 && selfType6 > selfType3 && selfType6 > selfType4 && selfType6 > selfType5)
+                {
+                    message = $"{names}, Ваш ключевой тип личности СЛАВНЫЙ МАЛЫЙ - {selfType6}%.";
+                    message1 = $"Остальные типы личности проявлены менее активно, либо не проявлены совсем:";
+                    message2 = $"ТВОРЕЦ - {selfType1}%";
+                    message3 = $"ИСКАТЕЛЬ - {selfType2}%";
+                    message4 = $"БУНТАРЬ - {selfType3}%";
+                    message5 = $"ЭСТЕТ - {selfType4}%";
+                    message6 = $"ОПЕКУН - {selfType5}%";
+                }
+                else
+                {
+                    message = "Error!!!";
+                }
+            }
         }
 
 
     }
 
-    // public async Task GetUserSelfTypePersent(IEnumerable<UserSelfType> userSelfTypes)
-    // {
-    //     // return userSelf.First(c => c.Name == res).Percent1;
-    //     // return userSelf.First(c => c.Name == res).Percent2;
-    //     // return userSelf.First(c => c.Name == res).Percent3;
-
-    //     selfType1 = userSelfTypes.First(c => c.Name == res).Percent1;
-    //     selfType2 = userSelfTypes.First(c => c.Name == res).Percent2;
-    //     selfType3 = userSelfTypes.First(c => c.Name == res).Percent3;
-
-    //     double[] arrayST = new double[] { selfType1, selfType2, selfType3 };
-
-
-    //     for (int i = 0; i <= arrayST.Length; i++)
-    //     {
-    //         if (selfType1 > selfType2 && selfType1 > selfType3)
-    //             {
-    //                 message = $"Ваш ключевой тип личности selfType1 - {selfType1}%";
-    //             }
-
-    //         if (selfType2 > selfType1 && selfType2 > selfType3)
-    //             {
-    //                 message = $"Ваш ключевой тип личности selfType1 - {selfType2}%";
-    //             }
-    //         if (selfType3 > selfType1 && selfType3 > selfType2)
-    //             {
-    //                 message = $"Ваш ключевой тип личности selfType1 - {selfType3}%";
-    //             }
-
-    //     }
-
-    // }
+ 
   
    // static void SendResult()
    //      {
@@ -272,6 +283,4 @@ else
    //          // smtp.Send(m);
    //          // // Console.Read();
    //      }
-
-
 }

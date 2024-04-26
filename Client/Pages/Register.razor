@@ -29,15 +29,15 @@
 
 	async Task RegisterAction()
 	{
-		var result = await client.PostAsJsonAsync("api/user", users);
+		var result = await client.PostAsJsonAsync("api/user/register", users);
 
-		NavMen.NavigateTo("/NewQuestion");
+		NavMen.NavigateTo("/Login");
 	}
 
 	// async Task LoginAction()
 	// {
 
-	// 	var result = await client.PostAsJsonAsync("api/admin/gettoken", admin);
+	// 	var result = await client.PostAsJsonAsync("api/admin/gettoken", users);
 	// 	var token = result.Content.ReadAsStringAsync();
 		
 

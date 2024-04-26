@@ -43,7 +43,7 @@
     private async Task CreateQuestion()
     {
         message = "Create";
-        await Http.PostAsJsonAsync<Question>("api/question", newQuestion);
+        await Http.PostAsJsonAsync<Question>("api/question/Quest", newQuestion);
         
         
     }

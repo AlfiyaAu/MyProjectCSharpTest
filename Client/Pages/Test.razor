@@ -215,10 +215,16 @@ else
     int t1 = 0;
     int t2 = 0;
     int t3 = 0;
+    int t4 = 0;
+    int t5 = 0;
+    int t6 = 0;
 
     Double selfType1;
     Double selfType2;
     Double selfType3;
+    Double selfType4;
+    Double selfType5;
+    Double selfType6;
 
     string Message = "";
 
@@ -361,14 +367,29 @@ else
             {
                 t3 += 1;
             }
+            else if (ans.SelfTypeId == 4)
+            {
+                t4 += 1;
+            }
+            else if (ans.SelfTypeId == 5)
+            {
+                t5 += 1;
+            }
+            else if (ans.SelfTypeId == 6)
+            {
+                t6 += 1;
+            }
         }
 
 
-        int sum = t1 + t2 + t3;
+        int sum = t1 + t2 + t3 + t4 + t5 + t6;
 
         Double selfType1 = (Double)t1 / sum * 100;
         Double selfType2 = (Double)t2 / sum * 100;
         Double selfType3 = (Double)t3 / sum * 100;
+        Double selfType4 = (Double)t4 / sum * 100;
+        Double selfType5 = (Double)t5 / sum * 100;
+        Double selfType6 = (Double)t6 / sum * 100;
 
         // if (questionInfo.CurrentId == questionInfo.CountId)
         // {
@@ -382,11 +403,14 @@ else
         
 
         // userSelfType.Id = 7;
+        userSelfType.IdUser = b;
         userSelfType.Percent1 = selfType1;
         userSelfType.Percent2 = selfType2;
         userSelfType.Percent3 = selfType3;
-        userSelfType.IdUser = b;
-
+        userSelfType.Percent4 = selfType4;
+        userSelfType.Percent5 = selfType5;
+        userSelfType.Percent6 = selfType6;
+        
 
         await Http.PostAsJsonAsync<UserSelfType>("api/question/final", userSelfType);
 
